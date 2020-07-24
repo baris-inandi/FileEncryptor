@@ -46,7 +46,7 @@ def encryptFile(filename , logstatus) :
                 sys("CLS")
                 print("please enter a password.")
                 getpass("press enter to go back to retry.")
-                encryptFile(filename)
+                encryptFile(filename, isLogEnabled)
                 sys("cls")
             else :
                 bufferSize = generateBufferSizeVariable(AESbufferSize)
