@@ -369,7 +369,7 @@ def decryptDirectory(aesfilename) :
                 sys("CLS")
                 print("please enter a password.")
                 getpass("press enter to go back to retry.")
-                decryptFolder(aesfilename)
+                decryptDirectory(aesfilename)
                 sys("cls")
             else :
                 targetedFile = UNZIP_DIR
