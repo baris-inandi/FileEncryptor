@@ -14,7 +14,7 @@ from shutil import make_archive as zip
 import shutil
 
 AESbufferSize = "256K"
-version = "v1.1.0-alpha"
+version = "v1.1.1-alpha"
 
 def generateBufferSizeVariable(userBufferSize) :
     if userBufferSize == "64K" :
