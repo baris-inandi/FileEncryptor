@@ -10,4 +10,6 @@ File Encryptor is a lightweight tool that uses AES to encrypt and decrypt files 
 
 FileEncyptor is a program for Windows 10 that utilizes Advanced Encryption Standards and lets you encrypt or decrypt any file on your computer. This adds a layer of privacy by requiring a password when trying to open locked files.
 
-The program opens in a command line window. Type 'help' to see all commands you can use. 
+The program opens in a command line window. Type 'help' to see all commands you can use and what they do. 
+
+Made with :heart: in Turkey
