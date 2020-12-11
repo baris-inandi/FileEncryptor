@@ -11,4 +11,4 @@ FileEncyptor is a program for Windows 10 that utilizes Advanced Encryption Stand
 
 The program opens in a command line window. Type 'help' to see all commands you can use and what they do. 
 
-Made with :heart: in Turkey
+Made with ❤ in Turkey
