@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+![banner-alt](https://user-images.githubusercontent.com/68742481/92403604-7580e480-f13a-11ea-86ad-f9c966896cdc.png)
 
 You can use the [editor on GitHub](https://github.com/baris-inandi/FileEncryptor/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
