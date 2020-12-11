@@ -2,4 +2,4 @@
 
 See releases from [here](https://github.com/baris-inandi/fileencryptor/releases "Releases")
 
-Or [download FileEncryptor](https://github.com/baris-inandi/FileEncryptor/raw/master/InstallFileEncryptor.exe "Download")
+or [download FileEncryptor](https://github.com/baris-inandi/FileEncryptor/raw/master/InstallFileEncryptor.exe "Download")
