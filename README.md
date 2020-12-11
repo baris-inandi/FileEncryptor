@@ -5,5 +5,5 @@ The program opens in a command line window. Type encrypt or decrypt to get start
 
 Feel free to comment or give suggestions.
 
-To download or to see all the releases, see:
-https://github.com/baris-inandi/FileEncryptor/releases
+*To download or to see all the releases, see:
+https://github.com/baris-inandi/FileEncryptor/releases*
