@@ -1,6 +1,6 @@
 import pyAesCrypt as aes
 import os
-from os import system as sys
+from os import system
 from getpass import getpass
 from tkinter.filedialog import askopenfilename as openfile
 from tkinter.filedialog import askopenfilenames as openfiles
@@ -12,9 +12,17 @@ from zipfile import ZipFile
 from os.path import basename
 from shutil import make_archive as zip
 import shutil
+import sys
+import requests
 
 AESbufferSize = "256K"
-version = "v1.1.1-alpha"
+current_version = "v1.2.0-alpha"
+
+def directoperation(filepath) :
+    if isFileAes(filepath) :
+        decryptFile(filepath)
+    if isFileExistent(filepath) and not isFileAes(filepath) :
+        encryptFile(filepath)
 
 def generateBufferSizeVariable(userBufferSize) :
     if userBufferSize == "64K" :
@@ -24,7 +32,7 @@ def generateBufferSizeVariable(userBufferSize) :
     elif userBufferSize == "1024K" :
         bufferSize = 1024 * 1024
     else :
-        sys("CLS")
+        system("CLS")
         print("invalid bufferSize:" , userBufferSize)
         raise Exception("INVALID BUFFERSIZE ERROR: use 64K, 256K or 1024K.")
     return bufferSize
@@ -59,15 +67,15 @@ def encryptDirectory(filename , dir , root) :
         isAES = isFileAes(filename)
         if not isAES :
             doesFilenameHaveWhitespace(filename)
-            sys("cls")
+            system("cls")
             pwd = input("enter a password: ")
-            sys("cls")
+            system("cls")
             if pwd == "" :
-                sys("CLS")
+                system("CLS")
                 print("please enter a password.")
                 getpass("press enter to go back to retry.")
                 encryptDirectory(filename , dir , root)
-                sys("cls")
+                system("cls")
             else :
                 bufferSize = generateBufferSizeVariable(AESbufferSize)
                 print()
@@ -85,7 +93,7 @@ def encryptDirectory(filename , dir , root) :
                     shutil.move("EncryptedFolder.aes" , root)
                     status = "success"
                 except shutil.Error as FileAlreadyExistsError :
-                    sys("cls")
+                    system("cls")
                     status = "failure"
                     logDirAction(action , dir , out , AESbufferSize , status)
                     print()
@@ -98,7 +106,7 @@ def encryptDirectory(filename , dir , root) :
 
                 if encryptionSuccessful :
                     os.remove(filename)
-                    sys("cls")
+                    system("cls")
                     print()
                     print("ENCRYPTED FOLDER LOCATION:\n" , ">>" , out)
                     print()
@@ -107,36 +115,62 @@ def encryptDirectory(filename , dir , root) :
 
                     return
                 elif not encryptionSuccessful :
-                    sys("CLS")
+                    system("CLS")
                     print("an error has occurred during encryption: encryption failure")
                     getpass("press enter to go back to main menu: ")
-                    sys("cls")
+                    system("cls")
                     main()
                 else :
-                    sys("CLS")
+                    system("CLS")
                     print("an error has occurred during encryption: validation failed.")
                     getpass("press enter to go back to main menu: ")
-                    sys("cls")
+                    system("cls")
                     main()
         else :
-            sys("cls")
+            system("cls")
             print("The file you selected is not a valid file.")
             print("Do not select an .aes file when encrypting.")
             getpass("press enter to go back to main menu: ")
-            sys("cls")
+            system("cls")
             main()
     else :
-        sys("CLS")
+        system("CLS")
         print("an error has occurred during encryption: file not found")
         getpass("press enter to go back to main menu: ")
-        sys("CLS")
+        system("CLS")
         main()
 
-def uninstall():
-
-    os.system("start " + "./unins000.exe")
+def uninstall() :
+    if isFileExistent("./download.exe") :
+        os.remove("./download.exe")
+    if isFileExistent("./unins000.exe"):
+        os.system("start " + "./unins000.exe")
+    if isFileExistent("./unins001.exe") :
+        os.system("start " + "./unins001.exe")
     raise Exception
 
+def update() :
+    system("cls")
+    updateavailable, new_version = checkforupdates()
+    if not updateavailable:
+        print("FileEncryptor is up to date.")
+        time.sleep(1)
+        main()
+    if updateavailable:
+        print("update available.\n")
+        print("current: ", current_version)
+        print("latest version: ", new_version, "\n")
+        confirmation = input("type 'yes' to update (or type 'cancel' to go back): ")
+        if confirmation.upper() == "YES":
+            os.system("start " + "./update.exe")
+            raise Exception
+        elif confirmation.upper() == "CANCEL":
+            main()
+        else:
+            system("cls")
+            print("invalid command.")
+            time.sleep(.75)
+            update()
 
 def encryptFile(filename) :
     action = "Encrypt File"
@@ -145,15 +179,15 @@ def encryptFile(filename) :
         isAES = isFileAes(filename)
         if not isAES :
             doesFilenameHaveWhitespace(filename)
-            sys("cls")
+            system("cls")
             pwd = input("enter a password: ")
-            sys("cls")
+            system("cls")
             if pwd == "" :
-                sys("CLS")
+                system("CLS")
                 print("please enter a password.")
                 getpass("press enter to go back to retry.")
                 encryptFile(filename)
-                sys("cls")
+                system("cls")
             else :
                 bufferSize = generateBufferSizeVariable(AESbufferSize)
                 print()
@@ -170,7 +204,7 @@ def encryptFile(filename) :
 
                 if encryptionSuccessful :
                     os.remove(filename)
-                    sys("cls")
+                    system("cls")
                     print()
                     print("ENCRYPTED FILE LOCATION:\n" , ">>" , targetedFile)
                     print()
@@ -179,30 +213,30 @@ def encryptFile(filename) :
 
                     return
                 elif not encryptionSuccessful :
-                    sys("CLS")
+                    system("CLS")
                     print("an error has occurred during encryption: encryption failure")
                     getpass("press enter to go back to main menu: ")
-                    sys("cls")
+                    system("cls")
                     main()
                 else :
-                    sys("CLS")
+                    system("CLS")
                     print("an error has occurred during encryption: validation failed.")
                     getpass("press enter to go back to main menu: ")
-                    sys("cls")
+                    system("cls")
                     main()
 
         else :
-            sys("cls")
+            system("cls")
             print("The file you selected is not a valid file.")
             print("Do not select an .aes file when encrypting.")
             getpass("press enter to go back to main menu: ")
-            sys("cls")
+            system("cls")
             main()
     else :
-        sys("CLS")
+        system("CLS")
         print("an error has occurred during encryption: file not found")
         getpass("press enter to go back to main menu: ")
-        sys("CLS")
+        system("CLS")
         main()
 
 def isFileExistent(fileToValidate) :
@@ -221,11 +255,11 @@ def doesFilenameHaveWhitespace(filename) :
     if not fileInvalid :
         return
     else :
-        sys("cls")
+        system("cls")
         print("The file you selected\nhas whitespace in the name\ntherefore it can't be used.")
         print("Try using _ instead of whitespace.")
         getpass("press enter to go back to main menu: ")
-        sys("cls")
+        system("cls")
         main()
 
 def decryptFile(aesfilename) :
@@ -237,15 +271,15 @@ def decryptFile(aesfilename) :
         if isAES :
             doesFilenameHaveWhitespace(aesfilename)
             bufferSize = generateBufferSizeVariable(AESbufferSize)
-            sys("cls")
+            system("cls")
             userpwd = input("password: ")
-            sys("cls")
+            system("cls")
             if userpwd == "" :
-                sys("CLS")
+                system("CLS")
                 print("please enter a password.")
                 getpass("press enter to go back to retry.")
                 decryptFile(aesfilename)
-                sys("cls")
+                system("cls")
             else :
                 targetedFile = aesfilename.replace('.aes' , '')
                 # print(aesfilename , "using:" , userpwd , bufferSize , "to: " , targetedFile)
@@ -258,7 +292,7 @@ def decryptFile(aesfilename) :
                 log(action , aesfilename , targetedFile , AESbufferSize , status)
                 if decryptionSuccessful :
                     os.remove(aesfilename)
-                    sys("cls")
+                    system("cls")
                     print()
                     print("DECRYPTED FILE LOCATION:\n" , ">>" , targetedFile)
                     print()
@@ -268,57 +302,52 @@ def decryptFile(aesfilename) :
                     os.system("start " + targetedFile)
                     return
                 elif not decryptionSuccessful :
-                    sys("CLS")
+                    system("CLS")
                     print("an error has occurred during decryption.")
                     getpass("press enter to go back to main menu: ")
 
-                    sys("cls")
+                    system("cls")
                     main()
 
                 else :
-                    sys("CLS")
+                    system("CLS")
                     print("an error has occurred during decryption: validation failed.")
                     getpass("press enter to go back to main menu: ")
-                    sys("cls")
+                    system("cls")
                     main()
         else :
-            sys("cls")
+            system("cls")
             print("The file you selected is not a valid file.")
             print("Try selecting an .aes file when decrypting.")
             getpass("press enter to go back to main menu: ")
 
-            sys("cls")
+            system("cls")
             main()
     else :
-        sys("CLS")
+        system("CLS")
         print("an error has occured during decryption.")
         getpass("press enter to go back to main menu: ")
 
-        sys("CLS")
+        system("CLS")
         main()
-
-
 
 def Decrypt() :
     path = selectfile()
     try :
         decryptFile(path)
     except Exception as e :
-        sys("cls")
+        system("cls")
         print("")
         print('Code: {c}'.format(c=type(e).__name__ , m=str(e)))
         print(e)
         print("wrong password or file corrupted.")
         getpass("press enter to go back to main menu: ")
         main()
-
     return
 
 def Encrypt() :
     path = selectfile()
     encryptFile(path)
-    return
-
     return
 
 def DecryptDir() :
@@ -328,7 +357,7 @@ def DecryptDir() :
     try :
         decryptDirectory(path)
     except Exception as e :
-        sys("cls")
+        system("cls")
         print("")
         print("wrong password or file corrupted.")
         getpass("press enter to go back to main menu: ")
@@ -337,7 +366,7 @@ def DecryptDir() :
     ROOT_DIR = os.path.dirname(os.path.abspath(path))
     TEMP_DIR = ROOT_DIR + r'\temp.zip'
     tempStillExistent = isFileExistent(TEMP_DIR)
-    if tempStillExistent:
+    if tempStillExistent :
         os.remove(TEMP_DIR)
 
 def decryptDirectory(aesfilename) :
@@ -350,10 +379,11 @@ def decryptDirectory(aesfilename) :
     isTempArchiveExistent = isFileExistent(TEMP_DIR)
 
     isUnzipDirectoryExistent = isFileExistent(UNZIP_DIR)
-    if isTempArchiveExistent or isUnzipDirectoryExistent:
-        sys("cls")
+    if isTempArchiveExistent or isUnzipDirectoryExistent :
+        system("cls")
         print()
-        print("There is already a 'temp.zip' or 'DecryptedFolder'\nin the selected directory.\nPlease delete these files and retry.")
+        print(
+            "There is already a 'temp.zip' or 'DecryptedFolder'\nin the selected directory.\nPlease delete these files and retry.")
         print()
         getpass("press enter to go back to main menu: ")
         main()
@@ -362,15 +392,15 @@ def decryptDirectory(aesfilename) :
         if isAES :
             doesFilenameHaveWhitespace(aesfilename)
             bufferSize = generateBufferSizeVariable(AESbufferSize)
-            sys("cls")
+            system("cls")
             userpwd = input("password: ")
-            sys("cls")
+            system("cls")
             if userpwd == "" :
-                sys("CLS")
+                system("CLS")
                 print("please enter a password.")
                 getpass("press enter to go back to retry.")
                 decryptDirectory(aesfilename)
-                sys("cls")
+                system("cls")
             else :
                 targetedFile = UNZIP_DIR
                 # print(aesfilename , "using:" , userpwd , bufferSize , "to: " , targetedFile)
@@ -390,7 +420,7 @@ def decryptDirectory(aesfilename) :
                     shutil.move("DecryptedFolder" , ROOT_DIR)
                     os.remove(TEMP_DIR)
                     os.remove(aesfilename)
-                    sys("cls")
+                    system("cls")
                     print()
                     print("DECRYPTED FOLDER LOCATION:\n" , ">>" , targetedFile)
                     print()
@@ -400,33 +430,33 @@ def decryptDirectory(aesfilename) :
                     os.system("start " + targetedFile)
                     return
                 elif not decryptionSuccessful :
-                    sys("CLS")
+                    system("CLS")
                     print("an error has occurred during decryption.")
                     getpass("press enter to go back to main menu: ")
 
-                    sys("cls")
+                    system("cls")
                     main()
 
                 else :
-                    sys("CLS")
+                    system("CLS")
                     print("an error has occurred during decryption: validation failed.")
                     getpass("press enter to go back to main menu: ")
-                    sys("cls")
+                    system("cls")
                     main()
         else :
-            sys("cls")
+            system("cls")
             print("The file you selected is not a valid file.")
             print("Try selecting an .aes file when decrypting.")
             getpass("press enter to go back to main menu: ")
 
-            sys("cls")
+            system("cls")
             main()
     else :
-        sys("CLS")
+        system("CLS")
         print("an error has occured during decryption.")
         getpass("press enter to go back to main menu: ")
 
-        sys("CLS")
+        system("CLS")
         main()
 
 def selectfile() :
@@ -434,7 +464,7 @@ def selectfile() :
     path = openfile(title='FileEncryptor: Select File')
     # print("path:" , path)
     if path == "" :
-        sys("cls")
+        system("cls")
         raise Exception("NO FILE SELECTED ERROR")
     else :
         return path
@@ -444,19 +474,17 @@ def selectfiletodir() :
     path = openfile(title='FileEncryptor: Select File')
     # print("path:" , path)
     if path == "" :
-        sys("cls")
+        system("cls")
         raise Exception("NO FILE SELECTED ERROR")
     else :
         return path
-
-
 
 def selectdir() :
     Tk().withdraw()
     path = opendir(title='FileEncryptor: Select Folder')
     # print("path:" , path)
     if path == "" :
-        sys("cls")
+        system("cls")
         raise Exception("NO DIRECTORY SELECTED ERROR")
     else :
         return path
@@ -466,7 +494,7 @@ def selectdirLog() :
     path = opendir(title='FileEncryptor: Select Folder to Save Log')
     # print("path:" , path)
     if path == "" :
-        sys("cls")
+        system("cls")
         raise Exception("NO DIRECTORY SELECTED ERROR")
     else :
         return path
@@ -534,11 +562,11 @@ def clearLog() :
     f = open(".\FileEncryptorLog.log" , "w")
     f.write(overwrite_message)
     f.close()
-    sys("cls")
+    system("cls")
     print()
     print("Cleared Log.")
     time.sleep(1)
-    sys("cls")
+    system("cls")
     main()
     return
 
@@ -552,7 +580,7 @@ def saveLog() :
     timestamp = ""
     print_message = ""
 
-    sys("cls")
+    system("cls")
     if os.path.isfile('.\FileEncryptorLog.log') :
         print("")
     else :
@@ -565,11 +593,11 @@ def saveLog() :
     f.close()
 
     if oldcontents == "" :
-        sys("cls")
+        system("cls")
         print()
         print("Log file empty, can't save.")
         getpass("Press enter to go back to main menu: ")
-        sys("cls")
+        system("cls")
         main()
         return
 
@@ -612,14 +640,14 @@ def saveLog() :
         print("File saved.")
         os.system("start " + filepath)
         getpass("Press enter to go back to main menu: ")
-        sys("cls")
+        system("cls")
 
         main()
 
     elif not success :
         print("An error has occured when saving file.")
         getpass("Press enter to go back to main menu: ")
-        sys("cls")
+        system("cls")
         main()
     else :
         raise Exception("ERROR: VALIDATION FAILED.")
@@ -644,11 +672,11 @@ def readLog() :
     f.close()
 
     if oldcontents == "" :
-        sys("cls")
+        system("cls")
         print()
         print("Nothing to see here, log file empty.")
         getpass("Press enter to go back to main menu: ")
-        sys("cls")
+        system("cls")
         main()
         return
 
@@ -671,8 +699,23 @@ def readLog() :
     main()
     return
 
+def version() :
+    system("cls")
+    print("\nFileEncryptor\n" , current_version)
+    getpass("press enter to continue: ")
+    main()
+
+def checkforupdates():
+    response = requests.get("https://api.github.com/repos/baris-inandi/fileencryptor/releases/latest")
+    latest = response.json()["tag_name"]
+    if latest == current_version:
+        available = False
+    else:
+        available = True
+    return available, latest
+
 def help() :
-    sys("cls")
+    system("cls")
     print("FileEncryptor works with commands.")
     print("The commands are short keywords that trigger events.")
     print("Type one of the following commands in the main menu.")
@@ -682,16 +725,21 @@ def help() :
     print("'encrypt.dir' or 'e.dir'\n  > Encrypts selected directory (or file) using AES \n")
     print("'decrypt' or 'd'\n  > Decrypts selected file \n")
     print("'decrypt.dir' or 'd.dir'\n  > Decrypts selected directory (or file) \n")
-    #print("'log.read'\n  > Reveals the log file \n")
-    #print("'log.clear'\n  > Clears the log \n")
-    #print("'log.save'\n  > Saves the current log in a .txt file. \n")
+    print("'version' or 'v'\n  > Shows the version of FileEncryptor you are using. \n")
+    # print("'log.read'\n  > Reveals the log file \n")
+    # print("'log.clear'\n  > Clears the log \n")
+    # print("'log.save'\n  > Saves the current log in a .txt file. \n")
     print("'uninstall'\n  > Runs uninstallation tool to easily uninstall FileEncryptor.")
+    print("'upadate'\n  > Checks and downloads updates")
     print()
     getpass("press enter to go back to main menu: ")
     main()
 
-def main() :
-    sys("cls")
+def maininterface() :
+    system("cls")
+    updatestatus, version = checkforupdates()
+    if updatestatus is True:
+        print("*update available* use command 'update' to download it.")
     print()
     print(
         "FileEncryptor is a free tool that lets you\nencrypt and decrypt files on your computer.\nType encrypt or decrypt (and press enter) to get started.")
@@ -702,31 +750,47 @@ def main() :
     print()
     print()
     maininput = input(">>")
-    if maininput == "encrypt" or maininput == "e" :
+    if maininput.lower() == "encrypt" or maininput.lower() == "e" :
         Encrypt()
-    elif maininput == "decrypt" or maininput == "d" :
+    elif maininput.lower() == "decrypt" or maininput.lower() == "d" :
         Decrypt()
-    elif maininput == "encrypt.dir" or maininput == "e.dir" :
+    elif maininput.lower() == "encrypt.dir" or maininput.lower() == "e.dir" :
         EncryptDir()
-    elif maininput == "decrypt.dir" or maininput == "d.dir" :
+    elif maininput.lower() == "decrypt.dir" or maininput.lower() == "d.dir" :
         DecryptDir()
-    elif maininput == "help" or maininput == "h" :
+    elif maininput.lower() == "help" or maininput.lower() == "h" :
         help()
-    #elif maininput == "log.read" :
+    elif maininput.lower() == "version" or maininput.lower() == "v" :
+        version()
+    elif maininput.lower() == "update":
+        update()
+    # elif maininput == "log.read" :
     #    readLog()
-    #elif maininput == "log.clear" :
+    # elif maininput == "log.clear" :
     #    clearLog()
-    #elif maininput == "log.save" :
+    # elif maininput == "log.save" :
     #    saveLog()
-    elif maininput == "uninstall" :
+    elif maininput.lower() == "uninstall" :
         uninstall()
     else :
-        sys("cls")
+        system("cls")
         print("invaid command.")
         time.sleep(.75)
-        sys("cls")
+        system("cls")
         main()
     return
+
+def main():
+    if os.path.isfile("./download.exe") :
+        os.remove("./download.exe")
+    try :
+        cmdarg = sys.argv[1]
+    except IndexError :
+        cmdarg = None
+    if cmdarg is None :
+        maininterface()
+    else :
+        directoperation(cmdarg)
 
 if __name__ == "__main__" :
     main()
