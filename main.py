@@ -699,7 +699,7 @@ def readLog() :
     main()
     return
 
-def version() :
+def showversion() :
     system("cls")
     print("\nFileEncryptor\n" , current_version)
     getpass("press enter to continue: ")
@@ -729,8 +729,8 @@ def help() :
     # print("'log.read'\n  > Reveals the log file \n")
     # print("'log.clear'\n  > Clears the log \n")
     # print("'log.save'\n  > Saves the current log in a .txt file. \n")
-    print("'uninstall'\n  > Runs uninstallation tool to easily uninstall FileEncryptor.")
-    print("'upadate'\n  > Checks and downloads updates")
+    print("'uninstall'\n  > Runs uninstallation tool to easily uninstall FileEncryptor.\n")
+    print("'upadate'\n  > Checks and downloads updates\n")
     print()
     getpass("press enter to go back to main menu: ")
     main()
@@ -761,7 +761,7 @@ def maininterface() :
     elif maininput.lower() == "help" or maininput.lower() == "h" :
         help()
     elif maininput.lower() == "version" or maininput.lower() == "v" :
-        version()
+        showversion()
     elif maininput.lower() == "update":
         update()
     # elif maininput == "log.read" :
