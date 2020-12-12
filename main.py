@@ -16,7 +16,7 @@ import sys
 import requests
 
 AESbufferSize = "256K"
-current_version = "v1.2.0-alpha"
+current_version = "v1.2.1-alpha"
 
 def directoperation(filepath) :
     if isFileAes(filepath) :
@@ -200,7 +200,7 @@ def encryptFile(filename) :
                     status = "success"
                 else :
                     status = "failure"
-                log(action , filename , targetedFile , AESbufferSize , status)
+                #log(action , filename , targetedFile , AESbufferSize , status)
 
                 if encryptionSuccessful :
                     os.remove(filename)
@@ -289,7 +289,7 @@ def decryptFile(aesfilename) :
                     status = "success"
                 else :
                     status = "failure"
-                log(action , aesfilename , targetedFile , AESbufferSize , status)
+                #log(action , aesfilename , targetedFile , AESbufferSize , status)
                 if decryptionSuccessful :
                     os.remove(aesfilename)
                     system("cls")
