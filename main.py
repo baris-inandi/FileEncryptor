@@ -16,13 +16,25 @@ import sys
 import requests
 
 AESbufferSize = "256K"
-current_version = "v1.2.1-alpha"
+current_version = "v1.2.2-alpha"
 
-def directoperation(filepath) :
-    if isFileAes(filepath) :
-        decryptFile(filepath)
-    if isFileExistent(filepath) and not isFileAes(filepath) :
-        encryptFile(filepath)
+def directoperation(cmdargpath) :
+    if isFileAesDir(cmdargpath) :
+        decryptDirectory(cmdargpath)
+    if isFileAes(cmdargpath) :
+        decryptFile(cmdargpath)
+    if isFileExistent(cmdargpath) and not isFileAes(cmdargpath) :
+        encryptFile(cmdargpath)
+    if os.path.isdir(cmdargpath) :
+        root = os.path.dirname(os.path.abspath(cmdargpath))
+        tempFileAlreadyExists = isFileExistent("temp.zip")
+        encryptedTempFileAlreadyExists = isFileExistent("EncryptedFolder.aesdir")
+        if tempFileAlreadyExists :
+            os.remove("temp.zip")
+        if encryptedTempFileAlreadyExists :
+            os.remove("EncryptedFolder.aesdir")
+        zip("temp" , 'zip' , cmdargpath)
+        encryptDirectory("temp.zip" , cmdargpath , root)
 
 def generateBufferSizeVariable(userBufferSize) :
     if userBufferSize == "64K" :
@@ -43,28 +55,28 @@ def EncryptDir() :
     # print("dir = ", dir)
     # print("root = ", root)
     tempFileAlreadyExists = isFileExistent("temp.zip")
-    encryptedTempFileAlreadyExists = isFileExistent("EncryptedFolder.aes")
+    encryptedTempFileAlreadyExists = isFileExistent("EncryptedFolder.aesdir")
     if tempFileAlreadyExists :
         os.remove("temp.zip")
     if encryptedTempFileAlreadyExists :
-        os.remove("EncryptedFolder.aes")
+        os.remove("EncryptedFolder.aesdir")
     zip("temp" , 'zip' , dir)
 
     encryptDirectory("temp.zip" , dir , root)
     return
 
     tempFileAlreadyExists = isFileExistent("temp.zip")
-    encryptedTempFileAlreadyExists = isFileExistent("EncryptedFolder.aes")
+    encryptedTempFileAlreadyExists = isFileExistent("EncryptedFolder.aesdir")
     if tempFileAlreadyExists :
         os.remove("temp.zip")
     if encryptedTempFileAlreadyExists :
-        os.remove("EncryptedFolder.aes")
+        os.remove("EncryptedFolder.aesdir")
 
 def encryptDirectory(filename , dir , root) :
     action = "Encrypt Directory"
     isTargetFileStillExistent = isFileExistent(filename)
     if isTargetFileStillExistent :
-        isAES = isFileAes(filename)
+        isAES = isFileAesDir(filename)
         if not isAES :
             doesFilenameHaveWhitespace(filename)
             system("cls")
@@ -79,7 +91,7 @@ def encryptDirectory(filename , dir , root) :
             else :
                 bufferSize = generateBufferSizeVariable(AESbufferSize)
                 print()
-                targetedFile = "EncryptedFolder.aes"
+                targetedFile = "EncryptedFolder.aesdir"
                 # print(filename , "using:" , pwd , bufferSize , "to: " , targetedFile)
                 print()
                 aes.encryptFile(filename , targetedFile , pwd , bufferSize)
@@ -88,9 +100,9 @@ def encryptDirectory(filename , dir , root) :
                     status = "success"
                 else :
                     status = "failure"
-                out = root + "\EncryptedFolder.aes"
+                out = root + "\EncryptedFolder.aesdir"
                 try :
-                    shutil.move("EncryptedFolder.aes" , root)
+                    shutil.move("EncryptedFolder.aesdir" , root)
                     status = "success"
                 except shutil.Error as FileAlreadyExistsError :
                     system("cls")
@@ -98,7 +110,7 @@ def encryptDirectory(filename , dir , root) :
                     logDirAction(action , dir , out , AESbufferSize , status)
                     print()
                     print(
-                        "ERROR: There is already a file called\n'EncryptedFolder.aes' in target directory.")
+                        "ERROR: There is already a file called\n'EncryptedFolder.aesdir' in target directory.")
                     getpass("press enter to go back to main menu: ")
                     main()
 
@@ -129,7 +141,7 @@ def encryptDirectory(filename , dir , root) :
         else :
             system("cls")
             print("The file you selected is not a valid file.")
-            print("Do not select an .aes file when encrypting.")
+            print("Do not select an .aesdir file when encrypting.")
             getpass("press enter to go back to main menu: ")
             system("cls")
             main()
@@ -248,6 +260,9 @@ def isFileExistent(fileToValidate) :
 
 def isFileAes(fileToValidate) :
     result = fileToValidate.endswith('.aes')
+    return result
+def isFileAesDir(fileToValidate) :
+    result = fileToValidate.endswith('.aesdir')
     return result
 
 def doesFilenameHaveWhitespace(filename) :
@@ -388,7 +403,7 @@ def decryptDirectory(aesfilename) :
         getpass("press enter to go back to main menu: ")
         main()
     if isTargetFileStillExistent :
-        isAES = isFileAes(aesfilename)
+        isAES = isFileAesDir(aesfilename)
         if isAES :
             doesFilenameHaveWhitespace(aesfilename)
             bufferSize = generateBufferSizeVariable(AESbufferSize)
@@ -411,13 +426,16 @@ def decryptDirectory(aesfilename) :
                     status = "success"
                 else :
                     status = "failure"
-                logDirAction(action , aesfilename , targetedFile , AESbufferSize , status)
+                #logDirAction(action , aesfilename , targetedFile , AESbufferSize , status)
                 if decryptionSuccessful :
                     with ZipFile(TEMP_DIR , 'r') as zipObj :
                         listOfFileNames = zipObj.namelist()
                         for fileName in listOfFileNames :
                             zipObj.extract(fileName , "DecryptedFolder")
-                    shutil.move("DecryptedFolder" , ROOT_DIR)
+                    try:
+                        shutil.move("DecryptedFolder" , ROOT_DIR)
+                    except Exception:
+                        print()
                     os.remove(TEMP_DIR)
                     os.remove(aesfilename)
                     system("cls")
@@ -446,7 +464,7 @@ def decryptDirectory(aesfilename) :
         else :
             system("cls")
             print("The file you selected is not a valid file.")
-            print("Try selecting an .aes file when decrypting.")
+            print("Try selecting an .aesdir file when decrypting.")
             getpass("press enter to go back to main menu: ")
 
             system("cls")
