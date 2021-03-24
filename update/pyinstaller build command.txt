@@ -1,0 +1,1 @@
+pyinstaller --name "update" --hidden-import requests --hidden-import os --hidden-import threading --hidden-import time –-onefile update.py
