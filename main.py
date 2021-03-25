@@ -1,116 +1,131 @@
-# gui
-
-# TODO: align close button to left and align the header to right on darwin (add os variable inside the ui class)
 from tkinter import Tk
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-import sys , platform
+from tendo import singleton
+from os import system
+import platform , sys , requests
+
+app_name = "FileEncryptor"
+version = "v1.0.0"
+
+def checkforupdates() :
+    try :
+        response = requests.get("https://api.github.com/repos/baris-inandi/fileencryptor/releases/latest")
+        latest = response.json()["tag_name"]
+        if latest == version : available = False
+        else : available = True
+        return available , latest
+    except :
+        return False , None
+
+def internet_connected() :
+    try :
+        requests.get("http://www.neverssl.com" , timeout=3)
+        print("internet connected")
+        return True
+    except (requests.ConnectionError , requests.Timeout) :
+        print("no internet connection")
+        return False
+
+# gui
+
+me = singleton.SingleInstance()
 
 app = QApplication([])
 
-app_name = "FileEncryptor"
-
+# easy way to make colors recognisable by Qt
 def rgb(r , g , b) : return f"rgb({r},{g},{b})" , (r , g , b)
 
 def hex(hexadecimal) : return rgb(*tuple(int(hexadecimal.strip("#")[i :i + 2] , 16) for i in (0 , 2 , 4)))
 
-def os_quit_button(obj, os):
+def window_control_button(obj , os) :
+    # os friendly window controls
     if os == "windows" :
         size = 30;
-        return button(obj , "✕" , ((ui.winx-(size+6),6),(size+2,size)) , lambda self : QCoreApplication.exit(0) , qss=style.button_close_win)
-    elif os == "linux" :
-        return button(obj , "✕" , ((ui.winx - (22 + 6) , 6) , (22 , 22)) , lambda self : QCoreApplication.exit(0) , qss=style.button_close_linux)
+        return button(obj , "✕" , ((ui.winx - (size + 8) , 6) , (size + 2 , size)) , lambda self : QCoreApplication.exit(0) , qss=style.button_close_win)
     elif os == "darwin" :
         return button(obj , "" , ((12 , 10) , (14 , 14)) , lambda self : QCoreApplication.exit(0) , qss=style.button_close_darwin)
-        return
+    else :
+        return button(obj , "✕" , ((ui.winx - (22 + 6) , 6) , (22 , 22)) , lambda self : QCoreApplication.exit(0) , qss=style.button_close_linux)
 
 def font(os) :
     if os == "windows" :
-        return "Segoe UI"
+        return "Calibri"
     elif os == "linux" :
         return "Ubuntu Sans"  # uses ubuntu sans if available, uses fallback font if its a distro other than ubuntu
     elif os == "darwin" :
         return "Helvetica"
+    else :
+        return "Arial"  # uses a safe font if something goes wrong with platform
     # uses default font as fallback if font not available
 
 class ui :
-    winx , winy = 360 , 200
-    margin = 6
+    winx , winy = 300 , 200
+    margin = 10
     font , fontsize = font(platform.system().lower()) , 16
 
     class style :
         # colors
         class colors :
             # window
+            text = hex("#303030")
             win_border = rgb(24 , 24 , 30)
             background = hex("#dedede")
             accent = hex("#eb8921")
             accent_darker = hex("#e37719")
-            accent_darkest = hex("#994c09")
+            accent_darkest = hex("#c26e1b")
+            accent_alt = hex("#02aba0")
+            accent_alt_darker = hex("#039b9e")
+            accent_alt_darkest = hex("#0e998d")
             # box
-            box = hex("#ababab")
+            box = hex("#cccccc")
             box_hover = rgb(40 , 40 , 42)
             box_active = rgb(86 , 92 , 100)
             border = rgb(30 , 30 , 30)
 
         # stylesheets
         button_close_win = """
-            QPushButton{{
-                font-size: 12px;
-                color:white;
-                background: {box} ;
-                border-radius: 1px;
-                border-style: none;}}
-            QPushButton:hover{{
-                background:rgb(100,10,30);}}
-            QPushButton:hover:!pressed{{
-                background:rgb(200,20,40);}}
+            QPushButton{{font-size: 12px;color:black;background: {box};border-radius: 1px;border-style: none;}}
+            QPushButton:hover{{background:rgb(100,10,30);color:white;}}
+            QPushButton:hover:!pressed{{background:rgb(200,20,40);}}
         """.format(box=colors.box[0])
 
         button_close_linux = """
-            QPushButton{{
-                font-size: 12px;
-                color:white;
-                background: {box} ;
-                border-radius: 11px;
-                border-style: none;}}
-            QPushButton:hover{{
-                background:rgb(100,10,30);}}
-            QPushButton:hover:!pressed{{
-                background:rgb(200,20,40);}}
+            QPushButton{{font-size: 12px;color:black;background: {box} ;border-radius: 11px;border: 1px solid #b5b5b5;}}
+            QPushButton:hover{{background:rgb(100,10,30);color:white;border-color: #A1232C;}}
+            QPushButton:hover:!pressed{{background:rgb(200,20,40);}}
         """.format(box=colors.box[0])
 
         button_close_darwin = """
-            QPushButton{
-                border: 1px solid #953331;
-                font-size: 12px;
-                color:white;
-                background: #FC5753;
-                border-radius: 7px;}
-            QPushButton:hover{
-                background: #C94542;}
+            QPushButton{border: 1px solid #953331;font-size: 12px;color:white;background: #FC5753;border-radius: 7px;}
+            QPushButton:hover{background: #C94542;}
         """
-        button_enc_dec = """
-            QPushButton{{
-                color: #f0f0f0;
-                background: {accent};
-                border-radius: 4px;
-                border-style: none;}}
-            QPushButton:hover{{
-                background:{accent_darkest};}}
-            QPushButton:hover:!pressed{{
-                background:{accent_darker};}}
-        """.format(accent=colors.accent[0],accent_darker=colors.accent_darker[0],accent_darkest=colors.accent_darkest[0])
+        button_enc = """
+            QPushButton{{color: #f0f0f0;background: {accent};border-bottom-left-radius: 8px;border-top-left-radius: 8px;border: 2px solid {accent_darker};}}
+            QPushButton:hover{{background:{accent_darkest};border: 2px solid {accent_darkest};}}
+            QPushButton:hover:!pressed{{border-color: {accent};background:{accent_darker};}}
+        """.format(accent=colors.accent[0] , accent_darker=colors.accent_darker[0] , accent_darkest=colors.accent_darkest[0])
+
+        button_dec = """
+            QPushButton{{color: #f0f0f0;background: {accent};border-bottom-right-radius: 8px;border-top-right-radius: 8px;border: 2px solid {accent_darker};}}
+            QPushButton:hover{{background:{accent_darkest};border: 2px solid {accent_darkest};}}
+            QPushButton:hover:!pressed{{border-color: {accent};background:{accent_darker};}}
+        """.format(accent=colors.accent_alt[0] , accent_darker=colors.accent_alt_darker[0] , accent_darkest=colors.accent_alt_darkest[0])
+
+        warning = """QPushButton{background: #fcba43;font-size: 11px;border: 1px solid #E79C2D;border-radius: 4px;color: #301b00;}
+            QPushButton:hover{background: #f0af3e;}
+            QPushButton:hover:!pressed{background: #ffc14f;}
+        """
 
 tk = Tk()
 style = ui.style
 
-# Default dark mode
+# Default color theme
 app.setStyle("Fusion")
 palette = QPalette()
 palette.setColor(QPalette.Window , QColor(*style.colors.background[1]))
-palette.setColor(QPalette.WindowText , Qt.black)
+palette.setColor(QPalette.WindowText , QColor(*style.colors.text[1]))
 palette.setColor(QPalette.Base , QColor(*style.colors.box[1]))
 palette.setColor(QPalette.AlternateBase , QColor(*style.colors.box[1]))
 palette.setColor(QPalette.ToolTipBase , Qt.white)
@@ -165,10 +180,10 @@ def button(item , content="Button" , geometry=((0 , 0) , (20 , 20)) , onclick=No
     if onclick != None : buttonobject.clicked.connect(onclick)
     return buttonobject
 
-class MainMenu(QWidget) :
+class popup(QWidget) :
 
-    def __init__(self , parent=None) :
-        QWidget.__init__(self , parent=parent)
+    def __init__(self) :
+        QWidget.__init__(self)
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0 , 0 , 0 , 0)
@@ -183,16 +198,42 @@ class MainMenu(QWidget) :
             font-family: {font};
             font-size: {fontsize}px;
             border: 1px solid {border};
+            border-radius: 0;
             """.format(font=ui.font , fontsize=str(ui.fontsize) , border=style.colors.win_border[0]))
 
-        # quit button TODO: add an ubuntu-style quit button for linux only
-        os_quit_button(self, platform.system().lower())
+        label(self , "" , ((0 , 0) , (100 , 100)) , qss="border: 2px solid #a8a8a8;")
 
-        button_pos(self , "Encrypt" , ((30 , 12) , (50 , 40)) , self.init_encrypt , "encrypt a file" , qss=style.button_enc_dec)
-        button_pos(self , "Decrypt" , ((30 , 48) , (50 , 40)) , self.init_encrypt , "encrypt a file" , qss=style.button_enc_dec)
+        label(self , "LOGO" , ((4 , 30) , (92 , 35)) , qss="font-size:36px;")
+
+        button_pos(self , "Encrypt" , ((4 , 65) , (50 , 36)) , self.init_encrypt , qss=style.button_enc , margin=(16 , ui.margin))
+        button_pos(self , "Decrypt" , ((44 , 65) , (50 , 36)) , self.init_decrypt , qss=style.button_dec , margin=(16 , ui.margin))
+
+        window_control_button(self , platform.system().lower())
+
+        # warn if update available
+        if internet_connected() :
+            updates = checkforupdates()
+            if updates[0] :
+                print(f'update available: {updates[1]}')
+                button_pos(self , f'- Update available. -\nClick to download {updates[1]}' , ((12 , 0) , (74 , 30)) , self.update_app , qss=style.warning)
+            else :
+                print("no update available")
+                label(self , f'<p style="text-align:center;">{app_name} {version}</p>' , ((16 , 4) , (68 , 22)) , qss="font-size:11px;border:none;")
+        else :
+            print("offline")
+            label(self , f'offline' , ((12 , 0) , (74 , 30)) , qss="font-size:11px;text-align:center;")
+
         self.show()
 
-    def init_encrypt(self) : print("qwe")
+    def init_encrypt(self) :
+        print("encrypt")
+
+    def init_decrypt(self) :
+        print("decrypt")
+
+    def update_app(self) :
+        system("start " + "./update.exe")
+        QCoreApplication.exit(0)
 
     def back(self) :
         print("back")
@@ -200,5 +241,5 @@ class MainMenu(QWidget) :
 def quit() : QCoreApplication.quit()
 
 App = QApplication(sys.argv)
-window = MainMenu()
+window = popup()
 sys.exit(App.exec())

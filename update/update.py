@@ -4,7 +4,7 @@ from time import sleep as delay
 from threading import Thread
 
 def download():
-    url = "https://github.com/baris-inandi/FileEncryptor/raw/master/InstallFileEncryptor.exe"
+    url = "https://github.com/baris-inandi/fileencryptor/releases/latest/download/InstallFileEncryptor.exe"
     r = requests.get(url, allow_redirects=True)
     open("./download.exe", 'wb').write(r.content)
     os.system("start ./download.exe")
