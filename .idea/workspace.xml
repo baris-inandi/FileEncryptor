@@ -15,24 +15,15 @@
         <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:dependabot" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:dependabot" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:pip" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
     </expand>
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9d064cca-1eea-4563-aa9a-cdb3d1faa942" name="Default Changelist" comment="" />
+    <list default="true" id="9d064cca-1eea-4563-aa9a-cdb3d1faa942" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/main_darwin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/main_win.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -75,6 +66,7 @@
     <property name="NewWatcherDialog.advanced.open" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -86,7 +78,7 @@
       <recent name="C:\Users\binan\PycharmProjects\FileEncryptor\eel_gui\web" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.main-darwin">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="FileEncryptor" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -109,16 +101,16 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="update" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="update-win" type="PythonConfigurationType" factoryName="Python">
       <module name="FileEncryptor" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\binan\AppData\Local\Programs\Python\Python38-32\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/update" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -132,11 +124,12 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.main" />
-      <item itemvalue="Python.update" />
+      <item itemvalue="Python.main-win" />
+      <item itemvalue="Python.main-darwin" />
+      <item itemvalue="Python.update-win" />
     </list>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -192,9 +185,26 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/FileEncryptor_master$update.coverage" NAME="update Coverage Results" MODIFIED="1616672983300" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FileEncryptor/update" />
-    <SUITE FILE_PATH="coverage/FileEncryptor_master$main.coverage" NAME="main Coverage Results" MODIFIED="1616703805432" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FileEncryptor" />
-    <SUITE FILE_PATH="coverage/FileEncryptor$main.coverage" NAME="main Coverage Results" MODIFIED="1616704475389" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/" />
+  <component name="WindowStateProjectService">
+    <state x="180" y="105" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1616705032263">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="180" y="105" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1616705032263" />
+    <state width="1414" height="232" key="GridCell.Tab.0.bottom" timestamp="1616705076881">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1414" height="232" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1616705076881" />
+    <state width="1414" height="232" key="GridCell.Tab.0.center" timestamp="1616705076879">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1414" height="232" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1616705076879" />
+    <state width="1414" height="232" key="GridCell.Tab.0.left" timestamp="1616705076877">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1414" height="232" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1616705076877" />
+    <state width="1414" height="232" key="GridCell.Tab.0.right" timestamp="1616705076880">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1414" height="232" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1616705076880" />
   </component>
 </project>
