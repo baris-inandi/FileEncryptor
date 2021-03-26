@@ -1,8 +1,5 @@
 # FileEncryptor
-File Encryptor is a lightweight tool that uses AES to encrypt and decrypt files on your computer. Developed in a few days during the pandemic. 
 
-The program opens in a command line window. Type encrypt or decrypt to get started - or 'help' to see further information
+FileEncryptor BETA on the way! v1.0.0-beta will be coming this year. 
 
-Feel free to comment or give suggestions.
-
-[**Download FileEncryptor**](https://github.com/baris-inandi/FileEncryptor/raw/master/InstallFileEncryptor.exe)
+Download the alpha version while the beta is in development: [**download latest (alpha)**](https://github.com/baris-inandi/FileEncryptor/raw/master/InstallFileEncryptor.exe)
