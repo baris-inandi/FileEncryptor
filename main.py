@@ -7,7 +7,7 @@ from os import system
 import platform, sys, requests
 
 app_name = "FileEncryptor"
-version = "v1.0.0"
+version = "v1.0.0-beta"
 
 
 def checkforupdates():
