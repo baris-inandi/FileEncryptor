@@ -124,3 +124,4 @@ dmypy.json
 
 desktop.ini
 .DS_Store
+.vscode

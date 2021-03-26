@@ -18,7 +18,7 @@ Feel free to comment or give suggestions.
 >>Cross-platform support! v1.0.0-beta will be available in Windows, MacOS and Linux featuring a cross-platform friendly design.
 >>Add filetype metadata/attribute to file: to avoid using an extension like 'foo.txt.aes', just add a '.txt' meta to the file that the program will read and will be able to decrypt 'foo.aes' to 'foo.txt'.
 >>New file extension
->>Future plans including performance optimizations, update utility gui, maybe new name and logo?
+>>Future plans including performance optimizations, update utility gui, maybe new name and logo? ...and like... a website?
 
 <details>
 <summary>-Click to show full changelog-</summary>
