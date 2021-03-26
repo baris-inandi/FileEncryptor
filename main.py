@@ -243,10 +243,16 @@ class popup(QWidget):
         self.show()
 
     def init_encrypt(self):
-        print("encrypt")
+        options = QFileDialog.Options()
+        files, _ = QFileDialog.getOpenFileNames(self,"Select files to encrypt", "","All Files (*)", options=options)
+        if files:
+            print(files)
 
     def init_decrypt(self):
-        print("decrypt")
+        options = QFileDialog.Options()
+        files, _ = QFileDialog.getOpenFileNames(self,"Select files to decrypt", "","All Files (*)", options=options)
+        if files:
+            print(files)
 
     def update_app(self):
         system("start " + "./update.exe")
