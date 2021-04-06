@@ -4,17 +4,22 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from tendo import singleton
 from os import system
-import platform, sys, requests
+import platform, sys, requests, os, tempfile, shutil
+from shutil import make_archive as zip
 
-app_name = "FileEncryptor"
-version = "v1.0.0-beta"
+class App():
+    app_name = "FileEncryptor"
+    version = "v1.0.0-beta"
+    encrypted_filetype = "aes"
+
+def something_went_wrong(): print("something went wrong :(")
 
 
 def checkforupdates():
     try:
         response = requests.get("https://api.github.com/repos/baris-inandi/fileencryptor/releases/latest")
         latest = response.json()["tag_name"]
-        if latest == version:
+        if latest == App.version:
             available = False
         else:
             available = True
@@ -151,7 +156,7 @@ palette.setColor(QPalette.Highlight, QColor(*style.colors.accent[1]))
 palette.setColor(QPalette.HighlightedText, Qt.white)
 
 app.setPalette(palette)
-app.setApplicationName(app_name)
+app.setApplicationName(App.app_name)
 
 
 def winpos(display_x, display_y, viewport_x=ui.winx, viewport_y=ui.winy): return ((display_x - (viewport_x + 20)), (display_y - (viewport_y + 20)))
@@ -207,7 +212,7 @@ class popup(QWidget):
         self.layout.addStretch(-1)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool)
         self.pressing = False
-        self.setWindowTitle(app_name)
+        self.setWindowTitle(App.app_name)
         self.setGeometry(*winpos(tk.winfo_screenwidth(), tk.winfo_screenheight()), ui.winx, ui.winy)
         self.setFixedSize(ui.winx, ui.winy)
         self.setStyleSheet(
@@ -235,7 +240,7 @@ class popup(QWidget):
                 button_pos(self, f'- Update available. -\nClick to download {updates[1]}', ((12, 0), (74, 30)), self.update_app, qss=style.warning)
             else:
                 print("no update available")
-                label(self, f'<p style="text-align:center;">{app_name} {version}</p>', ((16, 4), (68, 22)), qss="font-size:11px;border:none;")
+                label(self, f'<p style="text-align:center;">{App.app_name} {App.version}</p>', ((16, 4), (68, 22)), qss="font-size:11px;border:none;")
         else:
             print("offline")
             label(self, f'offline', ((12, 0), (74, 30)), qss="font-size:11px;text-align:center;")
@@ -244,13 +249,24 @@ class popup(QWidget):
 
     def init_encrypt(self):
         options = QFileDialog.Options()
-        files, _ = QFileDialog.getOpenFileNames(self,"Select files to encrypt", "","All Files (*)", options=options)
+        files, _ = QFileDialog.getOpenFileNames(self, f"{App.app_name}: select files to encrypt", f'{os.environ["HOMEPATH"]}/desktop', "All Files (*)", options=options)
         if files:
+            if len(files) > 1:
+                tempdir = f"{tempfile.gettempdir()}\\{App.app_name}\\src"
+                zipdir = f"{tempfile.gettempdir()}\\{App.app_name}\\compressed"
+                apptempdirs = [f"{tempfile.gettempdir()}\\{App.app_name}", tempdir, zipdir]
+                for dir in apptempdirs:
+                    if os.path.isdir(dir): shutil.rmtree(dir)
+                    os.mkdir(dir)
+                for i in files:
+                    shutil.copytree(i, tempdir) if os.path.isdir(i) else shutil.copy(i,tempdir)
+                zip(f"{zipdir}/temp", "zip", tempdir)
+                # TODO: remove %temp%/FileEncryptor when encryption done and when somethingwentwrong()
             print(files)
 
     def init_decrypt(self):
         options = QFileDialog.Options()
-        files, _ = QFileDialog.getOpenFileNames(self,"Select files to decrypt", "","All Files (*)", options=options)
+        files, _ = QFileDialog.getOpenFileNames(self, f"{App.app_name}: select files to decrypt", "", f"Encrypted Files (*.{App.encrypted_filetype})", options=options)
         if files:
             print(files)
 
@@ -265,6 +281,6 @@ class popup(QWidget):
 def quit(): QCoreApplication.quit()
 
 
-App = QApplication(sys.argv)
+QtApp = QApplication(sys.argv)
 window = popup()
-sys.exit(App.exec())
+sys.exit(QtApp.exec())
