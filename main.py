@@ -4,20 +4,54 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from tendo import singleton
 from os import system
-import platform, sys, requests, os, tempfile, shutil
+import pyAesCrypt as aes
+import platform, sys, requests, os, tempfile, shutil, ntpath, pathlib
 from shutil import make_archive as zip
+
 
 class App():
     app_name = "FileEncryptor"
     version = "v1.0.0-beta"
     encrypted_filetype = "aes"
+    latest_release_link = "https://api.github.com/repos/baris-inandi/fileencryptor/releases/latest"
+
 
 def something_went_wrong(): print("something went wrong :(")
 
 
+# TODO: let user select where decrypted file will be saved (QFileDialog)
+
+def generatemeta(file, pwd, bufferSize=256):
+    # function that generates an encrypted name.extention string which will be appended to the encrypted file.
+    try:
+        with open(f"{tempfile.gettempdir()}\\{App.app_name}\\temp_meta.txt", "w+") as file_obj:
+            file_obj.write(ntpath.basename(file))
+        encrypted_meta_dir = aes.encryptFile(f"{tempfile.gettempdir()}\\{App.app_name}\\temp_meta.txt", f"{tempfile.gettempdir()}\\{App.app_name}\\temp_meta.aes", pwd, bufferSize)
+        with open(encrypted_meta_dir, "r") as file_obj:
+            return file_obj.read()
+    except Exception as qwe:
+        print(qwe)
+        something_went_wrong()
+
+
+def enc(filepath, dest, pwd, bufferSize=256):
+    try:
+        # TODO: add meta to file that includes filetype
+        aes.encryptFile(filepath, dest, pwd, bufferSize)
+        with open(dest, "a") as file_obj:
+            file_obj.write("\n\n" + generatemeta(filepath, pwd))
+
+    except Exception as qwe:
+        print(qwe)
+        something_went_wrong()
+
+
+enc(r"C:\Users\binan\Downloads\qw.jpeg", r"C:\Users\binan\Downloads\yaram.aes", "sakso31")
+
+
 def checkforupdates():
     try:
-        response = requests.get("https://api.github.com/repos/baris-inandi/fileencryptor/releases/latest")
+        response = requests.get(App.latest_release_link)
         latest = response.json()["tag_name"]
         if latest == App.version:
             available = False
@@ -223,7 +257,7 @@ class popup(QWidget):
             border-radius: 0;
             """.format(font=ui.font, fontsize=str(ui.fontsize), border=style.colors.win_border[0]))
 
-        label(self, "", ((0, 0), (100, 100)), qss="border: 2px solid #a8a8a8;")
+        label(self, "", ((0, 0), (100, 100)), qss="border: 1px solid #a8a8a8;")
 
         label(self, "LOGO", ((4, 30), (92, 35)), qss="font-size:36px;")
 
@@ -248,21 +282,24 @@ class popup(QWidget):
         self.show()
 
     def init_encrypt(self):
-        options = QFileDialog.Options()
-        files, _ = QFileDialog.getOpenFileNames(self, f"{App.app_name}: select files to encrypt", f'{os.environ["HOMEPATH"]}/desktop', "All Files (*)", options=options)
-        if files:
-            if len(files) > 1:
-                tempdir = f"{tempfile.gettempdir()}\\{App.app_name}\\src"
-                zipdir = f"{tempfile.gettempdir()}\\{App.app_name}\\compressed"
-                apptempdirs = [f"{tempfile.gettempdir()}\\{App.app_name}", tempdir, zipdir]
-                for dir in apptempdirs:
-                    if os.path.isdir(dir): shutil.rmtree(dir)
-                    os.mkdir(dir)
-                for i in files:
-                    shutil.copytree(i, tempdir) if os.path.isdir(i) else shutil.copy(i,tempdir)
-                zip(f"{zipdir}/temp", "zip", tempdir)
-                # TODO: remove %temp%/FileEncryptor when encryption done and when somethingwentwrong()
-            print(files)
+        try:
+            options = QFileDialog.Options()
+            files, _ = QFileDialog.getOpenFileNames(self, f"{App.app_name}: select files to encrypt", f'{os.environ["HOMEPATH"]}/desktop', "All Files (*)", options=options)
+            if files:
+                if len(files) > 1:
+                    tempdir = f"{tempfile.gettempdir()}\\{App.app_name}\\src"
+                    zipdir = f"{tempfile.gettempdir()}\\{App.app_name}\\compressed"
+                    apptempdirs = [f"{tempfile.gettempdir()}\\{App.app_name}", tempdir, zipdir]
+                    for dir in apptempdirs:
+                        if os.path.isdir(dir): shutil.rmtree(dir)
+                        os.mkdir(dir)
+                    for i in files:
+                        shutil.copytree(i, tempdir) if os.path.isdir(i) else shutil.copy(i, tempdir)
+                    zip(f"{zipdir}/temp", "zip", tempdir)
+                    # TODO: remove %temp%/FileEncryptor when encryption done and when somethingwentwrong()
+                print(files)
+        except Exception:
+            something_went_wrong()
 
     def init_decrypt(self):
         options = QFileDialog.Options()

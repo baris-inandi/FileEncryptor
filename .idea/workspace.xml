@@ -20,6 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9d064cca-1eea-4563-aa9a-cdb3d1faa942" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -174,7 +175,8 @@
       <workItem from="1616758923856" duration="3886000" />
       <workItem from="1616788388906" duration="596000" />
       <workItem from="1617646248275" duration="4000" />
-      <workItem from="1617705547114" duration="9164000" />
+      <workItem from="1617705547114" duration="9857000" />
+      <workItem from="1617738576110" duration="5974000" />
     </task>
     <servers />
   </component>
@@ -195,6 +197,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/FileEncryptor$pycrunch_engine___auto.coverage" NAME="pycrunch-engine - auto Coverage Results" MODIFIED="1616745390397" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/FileEncryptor$main_win.coverage" NAME="main-win Coverage Results" MODIFIED="1617715222505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/" />
+    <SUITE FILE_PATH="coverage/FileEncryptor$main_win.coverage" NAME="main-win Coverage Results" MODIFIED="1617744697520" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/" />
   </component>
 </project>
