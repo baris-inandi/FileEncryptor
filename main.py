@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import *
 from tendo import singleton
 from os import system
 import pyAesCrypt as aes
-import platform, sys, requests, os, tempfile, shutil, ntpath, base64, io
+import platform, sys, requests, os, tempfile, shutil, ntpath
 from shutil import make_archive as zip
 
 
@@ -14,42 +14,43 @@ class App():
     version = "v1.0.0-beta"
     encrypted_filetype = "aes"
     latest_release_link = "https://api.github.com/repos/baris-inandi/fileencryptor/releases/latest"
+    tempdir = tempfile.gettempdir()
 
 
 def something_went_wrong(): print("something went wrong")
 
 
-# TODO: let user select where decrypted file will be saved (QFileDialog)
+# TODO: let user select where decrypted (and encrypted) file will be saved (QFileDialog)
+
+def cleantemp():
+    dir = f"{App.tempdir}\\{App.app_name}"
+    if os.path.isdir(dir): shutil.rmtree(dir)
+    os.mkdir(dir)
 
 
-# initialize ciphertext binary stream
-fCiph = io.BytesIO()
-
-# initialize decrypted binary stream
-fDec = io.BytesIO()
-
-
-def generatemeta(file, pwd, bufferSize=256 * 1024, text_encoder="utf-16"):
-    pbdata = ntpath.basename(file).encode(text_encoder)
-    fIn = io.BytesIO(pbdata)
-    aes.encryptStream(fIn, fCiph, pwd, bufferSize)
-    return str(fCiph.getvalue())
-
-def enc(filepath, dest, pwd, buffersize=256 * 1024):
+def generatemeta(file):
+    # function that generates an encrypted name.extention string which will be included in encrypted flie bundle
     try:
-        # TODO: add meta to file that includes filetype
-        aes.encryptFile(filepath, dest, pwd, buffersize)
-        with open(dest, "a") as file_obj:
-            encrypted_meta = generatemeta(filepath, pwd)
-            print(encrypted_meta)
-            file_obj.write(f"\n\n<meta=\"{encrypted_meta}\">")
-
+        metadir = f"{App.tempdir}\\{App.app_name}\\BUNDLE"
+        if not os.path.isdir(metadir):
+            os.mkdir(metadir)
+        if os.path.isfile(metadir + "\\META"):
+            os.remove(metadir + "\\META")
+        with open(metadir + "\\META", "w+") as file_obj:
+            file_obj.write(ntpath.basename(file))
     except Exception as e:
         print(e)
         something_went_wrong()
 
 
-enc(r"C:\Users\binan\Downloads\qw.jpeg", r"C:\Users\binan\Downloads\qweqwe.aes", "passssqwewerwerwerwer")
+def enc(filepath, dest, pwd, buffersize=256 * 1024):
+    try:
+        # TODO: add meta to file that includes filetype
+        # aes.encryptFile(filepath, "insert temp directory here", pwd, buffersize)
+        print("\nencrypt file")
+    except Exception as e:
+        print(e)
+        something_went_wrong()
 
 
 def checkforupdates():
@@ -76,14 +77,11 @@ def internet_connected():
 
 
 # gui
-
 me = singleton.SingleInstance()
-
 app = QApplication([])
 
 
 # easy way to make colors recognisable by Qt
-
 def color_rgb(r, g, b): return f"rgb({r},{g},{b})", (r, g, b)
 
 
@@ -143,13 +141,11 @@ class ui:
             QPushButton:hover{{background:rgb(100,10,30);color:white;}}
             QPushButton:hover:!pressed{{background:rgb(200,20,40);}}
         """.format(box=colors.box[0])
-
         button_close_linux = """
             QPushButton{{font-size: 12px;color:black;background: {box} ;border-radius: 11px;border: 1px solid #b5b5b5;}}
             QPushButton:hover{{background:rgb(100,10,30);color:white;border-color: #A1232C;}}
             QPushButton:hover:!pressed{{background:rgb(200,20,40);}}
         """.format(box=colors.box[0])
-
         button_close_darwin = """
             QPushButton{border: 1px solid #953331;font-size: 12px;color:white;background: #FC5753;border-radius: 7px;}
             QPushButton:hover{background: #C94542;}
@@ -159,13 +155,11 @@ class ui:
             QPushButton:hover{{background:{accent_darkest};border: 2px solid {accent_darkest};}}
             QPushButton:hover:!pressed{{border-color: {accent};background:{accent_darker};}}
         """.format(accent=colors.accent[0], accent_darker=colors.accent_darker[0], accent_darkest=colors.accent_darkest[0])
-
         button_dec = """
             QPushButton{{color: #f0f0f0;background: {accent};border-bottom-right-radius: 8px;border-top-right-radius: 8px;border: 2px solid {accent_darker};}}
             QPushButton:hover{{background:{accent_darkest};border: 2px solid {accent_darkest};}}
             QPushButton:hover:!pressed{{border-color: {accent};background:{accent_darker};}}
         """.format(accent=colors.accent_alt[0], accent_darker=colors.accent_alt_darker[0], accent_darkest=colors.accent_alt_darkest[0])
-
         warning = """QPushButton{background: #fcba43;font-size: 11px;border: 1px solid #E79C2D;border-radius: 4px;color: #301b00;}
             QPushButton:hover{background: #f0af3e;}
             QPushButton:hover:!pressed{background: #ffc14f;}
@@ -174,7 +168,6 @@ class ui:
 
 tk = Tk()
 style = ui.style
-
 # Default color theme
 app.setStyle("Fusion")
 palette = QPalette()
@@ -191,7 +184,6 @@ palette.setColor(QPalette.BrightText, Qt.green)
 palette.setColor(QPalette.Link, QColor(*style.colors.accent[1]))
 palette.setColor(QPalette.Highlight, QColor(*style.colors.accent[1]))
 palette.setColor(QPalette.HighlightedText, Qt.white)
-
 app.setPalette(palette)
 app.setApplicationName(App.app_name)
 
@@ -240,7 +232,6 @@ def button(item, content="Button", geometry=((0, 0), (20, 20)), onclick=None, to
 
 
 class popup(QWidget):
-
     def __init__(self):
         QWidget.__init__(self)
         self.layout = QVBoxLayout()
@@ -259,16 +250,11 @@ class popup(QWidget):
             border: 1px solid {border};
             border-radius: 0;
             """.format(font=ui.font, fontsize=str(ui.fontsize), border=style.colors.win_border[0]))
-
         label(self, "", ((0, 0), (100, 100)), qss="border: 1px solid #a8a8a8;")
-
         label(self, "LOGO", ((4, 30), (92, 35)), qss="font-size:36px;")
-
         button_pos(self, "Encrypt", ((4, 65), (50, 36)), self.init_encrypt, qss=style.button_enc, margin=(16, ui.margin))
         button_pos(self, "Decrypt", ((44, 65), (50, 36)), self.init_decrypt, qss=style.button_dec, margin=(16, ui.margin))
-
         window_control_button(self, platform.system().lower())
-
         # warn if update available
         if internet_connected():
             updates = checkforupdates()
@@ -281,26 +267,44 @@ class popup(QWidget):
         else:
             print("offline")
             label(self, f'offline', ((12, 0), (74, 30)), qss="font-size:11px;text-align:center;")
-
         self.show()
 
     def init_encrypt(self):
         try:
+
+            # TODO: dont rename data files to DATA since it corrupts image files etc.
+
             options = QFileDialog.Options()
             files, _ = QFileDialog.getOpenFileNames(self, f"{App.app_name}: select files to encrypt", f'{os.environ["HOMEPATH"]}/desktop', "All Files (*)", options=options)
             if files:
+                cleantemp()
+                bundledir = f"{App.tempdir}\\{App.app_name}\\BUNDLE"
+                if os.path.isdir(bundledir): shutil.rmtree(bundledir)
+                os.mkdir(bundledir)
                 if len(files) > 1:
-                    tempdir = f"{tempfile.gettempdir()}\\{App.app_name}\\src"
-                    zipdir = f"{tempfile.gettempdir()}\\{App.app_name}\\compressed"
-                    apptempdirs = [f"{tempfile.gettempdir()}\\{App.app_name}", tempdir, zipdir]
-                    for dir in apptempdirs:
+                    # multiple file encryption
+                    tempdir = f"{App.tempdir}\\{App.app_name}\\SOURCE"
+                    apptempdirectories = [f"{App.tempdir}\\{App.app_name}", tempdir, bundledir]
+                    for dir in apptempdirectories:
                         if os.path.isdir(dir): shutil.rmtree(dir)
                         os.mkdir(dir)
                     for i in files:
                         shutil.copytree(i, tempdir) if os.path.isdir(i) else shutil.copy(i, tempdir)
-                    zip(f"{zipdir}/temp", "zip", tempdir)
+                    zip(f"{bundledir}/data", "zip", tempdir)
+                    os.rename(f"{bundledir}\\data.zip", f"{bundledir}\\DATA")
+                    generatemeta("Decrypted.zip")
+                    output_filename = "Decrypted.zip"
                     # TODO: remove %temp%/FileEncryptor when encryption done and when somethingwentwrong()
-                print(files)
+                else:
+                    # one file encryption
+                    generatemeta(''.join(files))
+                    shutil.copyfile(''.join(files), f"{bundledir}\\DATA")
+                    output_filename = ntpath.basename(''.join(files))
+                if os.path.isfile(f"{bundledir}\\DATA" and f"{bundledir}\\META"):
+                    zip(f"{App.tempdir}\\{App.app_name}\\bundle", "zip", bundledir)
+                else:
+                    raise Exception
+                enc(f"{App.tempdir}\\{App.app_name}", f"{App.tempdir}\\{App.app_name}\\{output_filename}.{App.encrypted_filetype}", "pass")  # replace this with a user-inputed password
         except Exception:
             something_went_wrong()
 
