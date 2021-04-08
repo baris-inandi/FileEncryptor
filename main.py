@@ -303,7 +303,8 @@ class popup(QWidget):
                     zip(f"{App.tempdir}\\{App.app_name}\\bundle", "zip", bundledir)
                 else:
                     raise Exception
-                enc(f"{App.tempdir}\\{App.app_name}\\bundle.zip", f"{App.tempdir}\\{App.app_name}\\{output_filename}.{App.encrypted_filetype}", "pass")  # replace this with a user-inputed password
+                output_filename = f"{output_filename}.{App.encrypted_filetype}"
+                enc(f"{App.tempdir}\\{App.app_name}\\bundle.zip", f"{App.tempdir}\\{App.app_name}\\{output_filename}", "pass")  # replace this with a user-inputed password
         except Exception:
             something_went_wrong()
 
