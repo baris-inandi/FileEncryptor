@@ -46,7 +46,7 @@ def generatemeta(file):
 def enc(filepath, dest, pwd, buffersize=256 * 1024):
     try:
         # TODO: add meta to file that includes filetype
-        # aes.encryptFile(filepath, "insert temp directory here", pwd, buffersize)
+        aes.encryptFile(filepath, dest, pwd, buffersize)
         print("\nencrypt file")
     except Exception as e:
         print(e)
@@ -291,20 +291,19 @@ class popup(QWidget):
                     for i in files:
                         shutil.copytree(i, tempdir) if os.path.isdir(i) else shutil.copy(i, tempdir)
                     zip(f"{bundledir}/data", "zip", tempdir)
-                    os.rename(f"{bundledir}\\data.zip", f"{bundledir}\\DATA")
                     generatemeta("Decrypted.zip")
-                    output_filename = "Decrypted.zip"
+                    output_filename = "Encrypted"
                     # TODO: remove %temp%/FileEncryptor when encryption done and when somethingwentwrong()
                 else:
                     # one file encryption
                     generatemeta(''.join(files))
-                    shutil.copyfile(''.join(files), f"{bundledir}\\DATA")
-                    output_filename = ntpath.basename(''.join(files))
+                    shutil.copyfile(''.join(files), f"{bundledir}\\{ntpath.basename(''.join(files))}")
+                    output_filename = os.path.splitext(ntpath.basename(''.join(files)))[0]
                 if os.path.isfile(f"{bundledir}\\DATA" and f"{bundledir}\\META"):
                     zip(f"{App.tempdir}\\{App.app_name}\\bundle", "zip", bundledir)
                 else:
                     raise Exception
-                enc(f"{App.tempdir}\\{App.app_name}", f"{App.tempdir}\\{App.app_name}\\{output_filename}.{App.encrypted_filetype}", "pass")  # replace this with a user-inputed password
+                enc(f"{App.tempdir}\\{App.app_name}\\bundle.zip", f"{App.tempdir}\\{App.app_name}\\{output_filename}.{App.encrypted_filetype}", "pass")  # replace this with a user-inputed password
         except Exception:
             something_went_wrong()
 
