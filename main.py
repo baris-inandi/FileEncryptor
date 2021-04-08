@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import *
 from tendo import singleton
 from os import system
 import pyAesCrypt as aes
-import platform, sys, requests, os, tempfile, shutil, ntpath, pathlib
+import platform, sys, requests, os, tempfile, shutil, ntpath, base64, io
 from shutil import make_archive as zip
 
 
@@ -16,37 +16,40 @@ class App():
     latest_release_link = "https://api.github.com/repos/baris-inandi/fileencryptor/releases/latest"
 
 
-def something_went_wrong(): print("something went wrong :(")
+def something_went_wrong(): print("something went wrong")
 
 
 # TODO: let user select where decrypted file will be saved (QFileDialog)
 
-def generatemeta(file, pwd, bufferSize=256):
-    # function that generates an encrypted name.extention string which will be appended to the encrypted file.
-    try:
-        with open(f"{tempfile.gettempdir()}\\{App.app_name}\\temp_meta.txt", "w+") as file_obj:
-            file_obj.write(ntpath.basename(file))
-        encrypted_meta_dir = aes.encryptFile(f"{tempfile.gettempdir()}\\{App.app_name}\\temp_meta.txt", f"{tempfile.gettempdir()}\\{App.app_name}\\temp_meta.aes", pwd, bufferSize)
-        with open(encrypted_meta_dir, "r") as file_obj:
-            return file_obj.read()
-    except Exception as qwe:
-        print(qwe)
-        something_went_wrong()
+
+# initialize ciphertext binary stream
+fCiph = io.BytesIO()
+
+# initialize decrypted binary stream
+fDec = io.BytesIO()
 
 
-def enc(filepath, dest, pwd, bufferSize=256):
+def generatemeta(file, pwd, bufferSize=256 * 1024, text_encoder="utf-16"):
+    pbdata = ntpath.basename(file).encode(text_encoder)
+    fIn = io.BytesIO(pbdata)
+    aes.encryptStream(fIn, fCiph, pwd, bufferSize)
+    return str(fCiph.getvalue())
+
+def enc(filepath, dest, pwd, buffersize=256 * 1024):
     try:
         # TODO: add meta to file that includes filetype
-        aes.encryptFile(filepath, dest, pwd, bufferSize)
+        aes.encryptFile(filepath, dest, pwd, buffersize)
         with open(dest, "a") as file_obj:
-            file_obj.write("\n\n" + generatemeta(filepath, pwd))
+            encrypted_meta = generatemeta(filepath, pwd)
+            print(encrypted_meta)
+            file_obj.write(f"\n\n<meta=\"{encrypted_meta}\">")
 
-    except Exception as qwe:
-        print(qwe)
+    except Exception as e:
+        print(e)
         something_went_wrong()
 
 
-enc(r"C:\Users\binan\Downloads\qw.jpeg", r"C:\Users\binan\Downloads\yaram.aes", "sakso31")
+enc(r"C:\Users\binan\Downloads\qw.jpeg", r"C:\Users\binan\Downloads\qweqwe.aes", "passssqwewerwerwerwer")
 
 
 def checkforupdates():
@@ -318,6 +321,7 @@ class popup(QWidget):
 def quit(): QCoreApplication.quit()
 
 
-QtApp = QApplication(sys.argv)
-window = popup()
-sys.exit(QtApp.exec())
+if __name__ == "__main__":
+    QtApp = QApplication(sys.argv)
+    window = popup()
+    sys.exit(QtApp.exec())
