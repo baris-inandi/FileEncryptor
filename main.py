@@ -1,4 +1,3 @@
-from tkinter import Tk
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -7,7 +6,8 @@ from os import system
 import pyAesCrypt as aes
 import platform, sys, requests, os, tempfile, shutil, ntpath
 from shutil import make_archive as zip
-
+if sys.version_info[0] == 3: from tkinter import Tk
+else: from Tkinter import Tk
 
 class App():
     app_name = "FileEncryptor"
@@ -103,11 +103,11 @@ def font(os):
     if os == "windows":
         return "Calibri"
     elif os == "linux":
-        return "Ubuntu Sans"  # uses ubuntu sans if available, uses fallback font if its a distro other than ubuntu
+        return "Ubuntu"  # uses ubuntu if available, uses fallback font if its a distro other than ubuntu #TODO: Try a Noto Sans font to make it more universal??
     elif os == "darwin":
         return "Helvetica"
     else:
-        return "Arial"  # uses a safe font if something goes wrong with platform
+        return "Arial"  # uses a safe font if something goes wrong #TODO: try using Sans Serif as safe fallback font??
     # uses default font as fallback if font not available
 
 
