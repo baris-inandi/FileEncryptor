@@ -25,11 +25,10 @@ def something_went_wrong(): print("something went wrong")
 def cleantemp():
     dir = f"{App.tempdir}\\{App.app_name}"
     if os.path.isdir(dir): shutil.rmtree(dir)
-    os.mkdir(dir)
 
 
 def generatemeta(file):
-    # function that generates an encrypted name.extention string which will be included in encrypted flie bundle
+    # function that generates an encrypted name.extention string (foo.txt, bar.png etc.) which will be included in encrypted file bundle
     try:
         metadir = f"{App.tempdir}\\{App.app_name}\\BUNDLE"
         if not os.path.isdir(metadir):
@@ -137,17 +136,17 @@ class ui:
 
         # stylesheets
         button_close_win = """
-            QPushButton{{font-size: 12px;color:black;background: {box};border-radius: 1px;border-style: none;}}
+            QPushButton{{font-family: Arial; font-size: 12px;color:black;background: {box};border-radius: 1px;border-style: none;}}
             QPushButton:hover{{background:rgb(100,10,30);color:white;}}
             QPushButton:hover:!pressed{{background:rgb(200,20,40);}}
         """.format(box=colors.box[0])
         button_close_linux = """
-            QPushButton{{font-size: 12px;color:black;background: {box} ;border-radius: 11px;border: 1px solid #b5b5b5;}}
+            QPushButton{{font-family: Arial; font-size: 12px;color:black;background: {box} ;border-radius: 11px;border: 1px solid #b5b5b5;}}
             QPushButton:hover{{background:rgb(100,10,30);color:white;border-color: #A1232C;}}
             QPushButton:hover:!pressed{{background:rgb(200,20,40);}}
         """.format(box=colors.box[0])
         button_close_darwin = """
-            QPushButton{border: 1px solid #953331;font-size: 12px;color:white;background: #FC5753;border-radius: 7px;}
+            QPushButton{{font-family: Arial; border: 1px solid #953331;font-size: 12px;color:white;background: #FC5753;border-radius: 7px;}}
             QPushButton:hover{background: #C94542;}
         """
         button_enc = """
@@ -171,20 +170,24 @@ style = ui.style
 # Default color theme
 app.setStyle("Fusion")
 palette = QPalette()
-palette.setColor(QPalette.Window, QColor(*style.colors.background[1]))
-palette.setColor(QPalette.WindowText, QColor(*style.colors.text[1]))
-palette.setColor(QPalette.Base, QColor(*style.colors.box[1]))
-palette.setColor(QPalette.AlternateBase, QColor(*style.colors.box[1]))
-palette.setColor(QPalette.ToolTipBase, Qt.white)
-palette.setColor(QPalette.ToolTipText, Qt.black)
-palette.setColor(QPalette.Text, Qt.black)
-palette.setColor(QPalette.Button, QColor(*style.colors.box[1]))
-palette.setColor(QPalette.ButtonText, Qt.black)
-palette.setColor(QPalette.BrightText, Qt.green)
-palette.setColor(QPalette.Link, QColor(*style.colors.accent[1]))
-palette.setColor(QPalette.Highlight, QColor(*style.colors.accent[1]))
-palette.setColor(QPalette.HighlightedText, Qt.white)
+palette_parameters=[
+    (QPalette.Window, QColor(*style.colors.background[1])),
+    (QPalette.WindowText, QColor(*style.colors.text[1])),
+    (QPalette.Base, QColor(*style.colors.box[1])),
+    (QPalette.AlternateBase, QColor(*style.colors.box[1])),
+    (QPalette.ToolTipBase, Qt.white),
+    (QPalette.ToolTipText, Qt.black),
+    (QPalette.Text, Qt.black),
+    (QPalette.Button, QColor(*style.colors.box[1])),
+    (QPalette.ButtonText, Qt.black),
+    (QPalette.BrightText, Qt.green),
+    (QPalette.Link, QColor(*style.colors.accent[1])),
+    (QPalette.Highlight, QColor(*style.colors.accent[1])),
+    (QPalette.HighlightedText, Qt.white),
+]
+for i in palette_parameters: palette.setColor(*i)
 app.setPalette(palette)
+
 app.setApplicationName(App.app_name)
 
 

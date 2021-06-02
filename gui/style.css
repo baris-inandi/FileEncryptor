@@ -1,0 +1,30 @@
+body {
+  background: #ebebeb;
+}
+
+button {
+  padding: 32px 56px;
+  border-radius: 10px;
+  font-family: Arial;
+  color: white;
+  margin: 12px;
+  font-size: 20px;
+}
+
+.button-primary {
+  background: linear-gradient(180deg, #f39128, #ee820f);
+  border: 4px solid #e88115;
+}
+.button-primary:hover {
+  box-shadow: 0px 0px 10px 1px #f7bb7b, 0 0 3px -1px black;
+}
+
+.button-secondary {
+  background: linear-gradient(180deg, #00bcb0, #009e93);
+  border: 4px solid #029c92;
+}
+.button-secondary:hover {
+  box-shadow: 0px 0px 10px 1px #a4b1b0, 0 0 3px -1px black;
+}
+
+/*# sourceMappingURL=style.css.map */
