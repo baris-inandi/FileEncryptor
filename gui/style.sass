@@ -1,27 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap')
+
 $accent-primary: #eb8921
 $accent-secondary: #02aba0
+
 $background: #ebebeb
-$font: Arial
+$background-secondary: rgba(0, 0, 0, .05)
+$background-footer: linear-gradient(180deg, #dbdbdd, darken(#dbdbdd, 20%))
+
+$foreground: #323232
+$foreground-colorful: #fcfcfc
+$foreground-footer: #696972
+
+$warning: #f3d060
+$error: #ff605c
+$success: #62c892
+
+$font-1: Rubik, Arial, sans-serif
+$font-2: Roboto, Arial, sans-serif
+
+$footer-height: 48px
+
+#app
+    opacity: 0
+    transform: translateY(60px) scaleY(.9) scaleX(.8)
+    transition: .5s ease
+
+footer
+    opacity: 0
+    transition: .75s ease
+
+*
+    transition: .25s ease
 
 body
     background: $background
+    color: $foreground
+    font-family: $font-2
+    vertical-align: middle
+    overflow: hidden
+
+#app-container
+  display: flex
+  justify-content: center
+  align-items: center
+  height: 100%
+  flex-direction: column
 
 button
-    padding: 32px 56px
+    padding: 40px 50px
     border-radius: 10px
-    font-family: $font
-    color: white
-    margin: 12px
-    font-size: 20px
+    font-family: $font-1
+    color: $foreground-colorful
+    margin: 6px
+    font-size: 22px
+
+@function button($base)
+    @return linear-gradient(180deg, saturate(lighten($base, 2%), 6%), saturate(darken($base, 3%), 5%)), 4px solid darken($base, 3%), darken($base, 6%)
+    // background, border, :active
 
 .button-primary
-    background: linear-gradient(180deg, saturate(lighten($accent-primary, 3%), 6%), saturate(darken($accent-primary, 3%), 5%))
-    border: 4px solid darken($accent-primary, 3%)
+    $button-primary: button($accent-primary)
+    background: nth($button-primary, 1)
+    border: nth($button-primary, 2)
     &:hover
-        box-shadow: 0px 0px 10px 1px lighten(saturate($accent-primary, 5%), 20%), 0 0 3px -1px black
+        box-shadow: 0 0 20px 0 lighten($accent-primary, 10%), 0 0 4px -1px black
+    &:active
+        transition: none !important
+        background: nth($button-primary, 3)
 
 .button-secondary
-    background: linear-gradient(180deg, saturate(lighten($accent-secondary, 3%), 6%), saturate(darken($accent-secondary, 3%), 5%))
-    border: 4px solid darken($accent-secondary, 3%)
+    $button-secondary: button($accent-secondary)
+    background: nth($button-secondary, 1)
+    border: nth($button-secondary, 2)
     &:hover
-        box-shadow: 0px 0px 10px 1px lighten(desaturate($accent-secondary, 90%), 33%), 0 0 3px -1px black
+        box-shadow: 0 0 20px 0 lighten(desaturate($accent-secondary, 75%), 20%), 0 0 4px -1px black
+    &:active
+        transition: none !important
+        background: nth($button-secondary, 3)
+
+.flex-col
+    display: flex
+    flex-direction: column
+
+.flex-row
+    display: flex
+    flex-direction: row
+
+.fas::before
+    margin-right: 10px
+    font-size: 16px
+
+#logo
+    font-size: 24px
+    font-family: $font-1
+    color: $foreground
+    text-align: center
+    margin: 0 6px
+    padding-right: 10px
+
+.warn-area
+    background: $warning
+    padding: 16px 24px
+    margin: 20px 6px
+    border: nth(button($warning), 2)
+    border-radius: 6px
+    text-align: center
+
+#top-section
+    align-items: center
+    justify-content: space-between
+    margin: 0 6px
+
+footer
+    padding: 0 20px
+    position: fixed
+    left: 0px
+    bottom: 0px
+    height: $footer-height
+    width: calc(100% - 40px)
+    align-items: center
+    color: $foreground-footer
+    justify-content: space-between
+    background: $background-footer
+
+.footer-icon::before
+    padding-left: 10px
+    font-size: 20px
+
+#drop-area
+    width: 100%
+    height: 190px
+    background: $background-secondary
+    border: nth(button($background-secondary),2)
+    border-radius: 10px
+    margin: 20px 0
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    color: $foreground-footer
+
+#import-file-icon::before
+    font-size: 32px

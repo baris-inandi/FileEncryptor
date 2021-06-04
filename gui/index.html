@@ -4,16 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./jquery.min.js"></script>
+    <script src="./main.js"></script>
     <script src="https://kit.fontawesome.com/9da952c940.js" crossorigin="anonymous"></script>
     <title>FileEncyptor</title>
 </head>
 
 <body>
-
-    <button class="button-primary">Button</button>
-    <button class="button-secondary">Button</button>
-
+    <div id="app-container">
+        <div id="app">
+            <div class="flex-col">
+                <div class="flex-row" id="top-section">
+                    <p id="logo">FileEncyptor</p>
+                    <div class="warn-area">No internet connection</div>
+                </div>
+                <div class="flex-row">
+                    <button class="button-primary"><i class="fas fa-lock"></i>Encrypt</button>
+                    <button class="button-secondary"><i class="fas fa-unlock"></i>Decrypt</button>
+                </div>
+                <div id="drop-area">
+                    <i id="import-file-icon" class="fas fa-file-import"></i>
+                    <p>or drop your files here</p>
+                </div>
+            </div>
+        </div>
+        <footer class="flex-row" id="footer">
+            <p>FileEncryptor v1.12.0-beta </p>
+            <div>
+                <i class="footer-icon fab fa-github"></i>
+                <i class="footer-icon fas fa-info-circle"></i>
+            </div>
+        </footer>
+    </div>
 </body>
 
 </html>
