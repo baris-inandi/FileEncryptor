@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="./jquery.min.js"></script>
-    <script src="./main.js"></script>
+    <script src="./eel.js"></script>
     <script src="https://kit.fontawesome.com/9da952c940.js" crossorigin="anonymous"></script>
     <title>FileEncyptor</title>
 </head>
@@ -19,8 +19,12 @@
                     <div class="warn-area">No internet connection</div>
                 </div>
                 <div class="flex-row">
-                    <button class="button-primary"><i class="fas fa-lock"></i>Encrypt</button>
-                    <button class="button-secondary"><i class="fas fa-unlock"></i>Decrypt</button>
+                    <button id="enc-btn" class="button-primary"><i class="fas fa-lock"></i>Encrypt</button>
+                    <input id="enc-btn-real" type="file" hidden="true" multiple="true">
+
+                    <button id="dec-btn" class="button-secondary"><i class="fas fa-unlock"></i>Decrypt</button>
+                    <input id="dec-btn-real" type="file" hidden="true">
+
                 </div>
                 <div id="drop-area">
                     <i id="import-file-icon" class="fas fa-file-import"></i>
@@ -29,7 +33,9 @@
             </div>
         </div>
         <footer class="flex-row" id="footer">
-            <p>FileEncryptor v1.12.0-beta </p>
+            <div class="flex-row align-center">
+                <p>FileEncryptor v1.12.0-beta<p class="text-small">@baris-inandi, 2021</p></p>
+            </div>
             <div>
                 <i class="footer-icon fab fa-github"></i>
                 <i class="footer-icon fas fa-info-circle"></i>
@@ -37,5 +43,5 @@
         </footer>
     </div>
 </body>
-
+<script src="./main.js"></script>
 </html>

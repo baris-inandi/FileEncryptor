@@ -87,6 +87,12 @@ button {
   background: #028d84;
 }
 
+.align-center {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 .flex-col {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -154,8 +160,8 @@ footer {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  background: -webkit-gradient(linear, left top, left bottom, from(#dbdbdd), to(#a7a7ab));
-  background: linear-gradient(180deg, #dbdbdd, #a7a7ab);
+  background: -webkit-gradient(linear, left top, left bottom, from(#dbdbdd), to(#bcbcbf));
+  background: linear-gradient(180deg, #dbdbdd, #bcbcbf);
 }
 
 .footer-icon::before {
@@ -188,5 +194,13 @@ footer {
 
 #import-file-icon::before {
   font-size: 32px;
+}
+
+.text-small {
+  padding: 0 10px;
+  margin: 0;
+  margin-bottom: -2px;
+  font-size: 12px;
+  vertical-align: bottom;
 }
 /*# sourceMappingURL=style.css.map */
