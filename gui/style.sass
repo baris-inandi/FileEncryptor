@@ -13,7 +13,7 @@ $foreground: #383838
 $foreground-colorful: #fcfcfc
 $foreground-footer: #696972
 
-$warning: #e4c151
+$warning: #f7ca38
 $error: #ff605c
 $success: #62c892
 
@@ -66,7 +66,7 @@ button
     color: $success
 
 @function button($base)
-    @return linear-gradient(180deg, saturate(lighten($base, 2%), 6%), saturate(darken($base, 3%), 5%)), 4px solid darken($base, 3%), darken($base, 6%)
+    @return linear-gradient(180deg, saturate(lighten($base, 2%), 6%), saturate(darken($base, 4%), 5%)), 4px solid darken($base, 4%), darken($base, 6%)
     // background, border, :active
 
 .button-primary
@@ -159,6 +159,7 @@ footer
     justify-content: center
     align-items: center
     color: $foreground-footer
+    display: none
 
 #import-file-icon::before
     font-size: 32px
