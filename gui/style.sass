@@ -5,20 +5,21 @@ $accent-primary: #eb8921
 $accent-secondary: #02aba0
 
 $background: #ebebeb
+$background-darker: darken($background, 6%)
 $background-secondary: rgba(0, 0, 0, .05)
 $background-footer: linear-gradient(180deg, #dbdbdd, darken(#dbdbdd, 12%))
 
-$foreground: #323232
+$foreground: #383838
 $foreground-colorful: #fcfcfc
 $foreground-footer: #696972
 
-$warning: #f3d060
+$warning: #e4c151
 $error: #ff605c
 $success: #62c892
 
 $font-1: Rubik, Arial, sans-serif
 $font-2: Roboto, Arial, sans-serif
-
+$radius: 8px
 $footer-height: 48px
 
 #app
@@ -49,11 +50,20 @@ body
 
 button
     padding: 40px 50px
-    border-radius: 10px
+    border-radius: $radius
     font-family: $font-1
     color: $foreground-colorful
     margin: 6px
     font-size: 22px
+
+.error-color
+    color: $error
+
+.warning-color
+    color: $warning
+
+.success-color
+    color: $success
 
 @function button($base)
     @return linear-gradient(180deg, saturate(lighten($base, 2%), 6%), saturate(darken($base, 3%), 5%)), 4px solid darken($base, 3%), darken($base, 6%)
@@ -79,8 +89,14 @@ button
         transition: none !important
         background: nth($button-secondary, 3)
 
+.no-margin
+    margin: 0
+
 .align-center
     align-items: center
+
+.justify-center
+    justify-content: center
 
 .flex-col
     display: flex
@@ -90,7 +106,7 @@ button
     display: flex
     flex-direction: row
 
-.fas::before
+.fas-lock::before
     margin-right: 10px
     font-size: 16px
 
@@ -107,7 +123,7 @@ button
     padding: 16px 24px
     margin: 20px 6px
     border: nth(button($warning), 2)
-    border-radius: 6px
+    border-radius: $radius
     text-align: center
 
 #top-section
@@ -136,7 +152,7 @@ footer
     height: 190px
     background: $background-secondary
     border: nth(button($background-secondary),2)
-    border-radius: 10px 
+    border-radius: $radius
     margin: 20px 0
     display: flex
     flex-direction: column
@@ -153,3 +169,73 @@ footer
     margin-bottom: -2px
     font-size: 12px
     vertical-align: bottom
+
+.overlay
+    height: 100%
+    width: 100%
+    position: fixed
+    z-index: 99
+    left: 0
+    top: 0
+    background: rgba(0,0,0, 0.85)
+    overflow-x: hidden
+    transition: 0.5s
+
+.popup
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: $background
+    border-radius: $radius
+    height: fit-content
+    width: 300px
+    padding: 50px
+    padding-bottom: 32px
+
+.message-icon
+    margin-left: 10px
+
+.message
+    height: 100%;
+    width: 100%;
+
+.message-text-area
+    margin-left: 16px
+
+.message-header
+    font-family: $font-1
+    font-size: 24px
+    margin: 0
+    padding-right: 48px
+
+.message-icon:before
+    font-size: 20px
+
+.message-button
+    background: $background-darker
+    color: $foreground
+    border: none
+    padding: 20px 32px
+    font-size: 14px
+    transition: none
+    font-family: $font-2
+    &:active
+        background: darken($background-darker, 10%)
+        transition: none
+
+.disabled
+    color: lighten($foreground, 35%)
+
+.password-field
+    color: $foreground
+    padding: 10px
+    font-size: 20px
+    border-radius: $radius
+    border: none
+    background: $background-darker
+    width: 200px
+    margin: 6px 0
+
+.spacer
+    height: 24px

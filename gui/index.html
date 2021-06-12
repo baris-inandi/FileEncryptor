@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="./jquery.min.js"></script>
-    <script src="./eel.js"></script>
     <script src="https://kit.fontawesome.com/9da952c940.js" crossorigin="anonymous"></script>
+    <script src="./eel.js" type="module"></script>
+    <script src="./main.js"></script>
     <title>FileEncyptor</title>
 </head>
 
@@ -19,12 +20,9 @@
                     <div class="warn-area">No internet connection</div>
                 </div>
                 <div class="flex-row">
-                    <button id="enc-btn" class="button-primary"><i class="fas fa-lock"></i>Encrypt</button>
-                    <input id="enc-btn-real" type="file" hidden="true" multiple="true">
-
-                    <button id="dec-btn" class="button-secondary"><i class="fas fa-unlock"></i>Decrypt</button>
-                    <input id="dec-btn-real" type="file" hidden="true">
-
+                    <button onclick="py()" id="enc-btn" class="button-primary"><i
+                            class="fas fas-lock fa-lock"></i>Encrypt</button>
+                    <button id="dec-btn" class="button-secondary"><i class="fas fas-lock fa-unlock"></i>Decrypt</button>
                 </div>
                 <div id="drop-area">
                     <i id="import-file-icon" class="fas fa-file-import"></i>
@@ -34,7 +32,8 @@
         </div>
         <footer class="flex-row" id="footer">
             <div class="flex-row align-center">
-                <p>FileEncryptor v1.12.0-beta<p class="text-small">@baris-inandi, 2021</p></p>
+                <p>FileEncryptor v1.12.0-beta<p class="text-small">@baris-inandi, 2021</p>
+                </p>
             </div>
             <div>
                 <i class="footer-icon fab fa-github"></i>
@@ -42,6 +41,115 @@
             </div>
         </footer>
     </div>
+    <div hidden="true" class="overlay">
+        <div class="flex-col align-center justify-center" id="dialog-content-wrapper">
+
+                <div hidden="true" class="popup" id="enc-failed">
+                    <div class="message flex-row error-message">
+                        <div class="message-text-area">
+                            <p class="message-header">
+                                Something went horribly wrong.
+                                <i class="fas fa-exclamation-triangle error-color message-icon"></i>
+                            </p>
+                            <p>Failed to encrypt file. File deleted? Process interrupted? A bug? Whatever it is, this
+                                shouldn't be happening.</p>
+                        </div>
+                    </div>
+                    <div class="flex-row align-center justify-center message-buttons">
+                        <button class="message-button">Dismiss</button>
+                    </div>
+                </div>
+
+                <div hidden="true" class="popup" id="dec-failed">
+                    <div class="message flex-row error-message">
+                        <div class="message-text-area">
+                            <p class="message-header">
+                                That didn't work.
+                                <i class="fas fa-exclamation-triangle error-color message-icon"></i>
+                            </p>
+                            <p>We couldn't decrypt this file. Wrong password? Corrupted file? We are not sure.</p>
+                        </div>
+                    </div>
+                    <div class="flex-row align-center justify-center message-buttons">
+                        <button class="message-button">Retry</button>
+                        <button class="message-button">Dismiss</button>
+                    </div>
+                </div>
+
+                <div hidden="true" class="popup" id="enc-successful">
+                    <div class="message flex-row error-message">
+                        <div class="message-text-area">
+                            <p class="message-header">
+                                Encrypted file!
+                                <i class="fas fa-check success-color message-icon"></i>
+                            </p>
+                            <p>We encrypted your file. Download your encrypted file here:</p>
+                        </div>
+                    </div>
+                    <div class="flex-row align-center justify-center message-buttons">
+                        <button class="message-button">Download</button>
+                        <button class="message-button">Dismiss</button>
+                    </div>
+                </div>
+                
+                <div hidden="hidden" class="popup" id="dec-successful">
+                    <div class="message flex-row error-message">
+                        <div class="message-text-area">
+                            <p class="message-header">
+                                Successfully decrypted file!
+                                <i class="fas fa-check success-color message-icon"></i>
+                            </p>
+                            <p>We decrypted your file. Download it here:</p>
+                        </div>
+                    </div>
+                    <div class="flex-row align-center justify-center message-buttons">
+                        <button class="message-button">Download</button>
+                        <button class="message-button">Dismiss</button>
+                    </div>
+                </div>
+                
+                <div hidden="true" class="popup" id="enc-pass">
+                    <div class="message flex-row error-message">
+                        <div class="message-text-area">
+                            <p class="message-header">
+                                Create a password for your file: 
+                                <i class="fas fa-key warning-color message-icon"></i>
+                            </p>
+                            <div class="spacer"></div>
+                            <p class="no-margin">Enter Password: </p>
+                            <input class="password-field" type="password">
+                            <p class="no-margin">Confirm Password: </p>
+                            <input class="password-field" type="password">
+                            <div class="spacer"></div>
+                        </div>
+                    </div>
+                    <div class="flex-row align-center justify-center message-buttons">
+                        <button class="message-button">Cancel</button>
+                        <button disabled="true" class="disabled message-button">Encrypt</button>
+                    </div>
+                </div>
+
+                <div hidden="true" class="popup" id="dec-pass">
+                    <div class="message flex-row error-message">
+                        <div class="message-text-area">
+                            <p class="message-header">
+                                Enter password to decrypt file:
+                                <i class="fas fa-key warning-color message-icon"></i>
+                            </p>
+                            <div class="spacer"></div>
+                            <p class="no-margin">Password: </p>
+                            <input class="password-field" type="password">
+                            <div class="spacer"></div>
+                        </div>
+                    </div>
+                    <div class="flex-row align-center justify-center message-buttons">
+                        <button class="message-button">Cancel</button>
+                        <button class="message-button">Decrypt</button>
+                    </div>
+                </div>
+
+        </div>
+    </div>
 </body>
-<script src="./main.js"></script>
+
 </html>

@@ -21,7 +21,7 @@ footer {
 
 body {
   background: #ebebeb;
-  color: #323232;
+  color: #383838;
   font-family: Roboto, Arial, sans-serif;
   vertical-align: middle;
   overflow: hidden;
@@ -46,11 +46,23 @@ body {
 
 button {
   padding: 40px 50px;
-  border-radius: 10px;
+  border-radius: 8px;
   font-family: Rubik, Arial, sans-serif;
   color: #fcfcfc;
   margin: 6px;
   font-size: 22px;
+}
+
+.error-color {
+  color: #ff605c;
+}
+
+.warning-color {
+  color: #e4c151;
+}
+
+.success-color {
+  color: #62c892;
 }
 
 .button-primary {
@@ -87,10 +99,20 @@ button {
   background: #028d84;
 }
 
+.no-margin {
+  margin: 0;
+}
+
 .align-center {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+.justify-center {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .flex-col {
@@ -113,7 +135,7 @@ button {
           flex-direction: row;
 }
 
-.fas::before {
+.fas-lock::before {
   margin-right: 10px;
   font-size: 16px;
 }
@@ -121,18 +143,18 @@ button {
 #logo {
   font-size: 24px;
   font-family: Rubik, Arial, sans-serif;
-  color: #323232;
+  color: #383838;
   text-align: center;
   margin: 0 6px;
   padding-right: 10px;
 }
 
 .warn-area {
-  background: #f3d060;
+  background: #e4c151;
   padding: 16px 24px;
   margin: 20px 6px;
-  border: 4px solid #f2cc52;
-  border-radius: 6px;
+  border: 4px solid #e2bc44;
+  border-radius: 8px;
   text-align: center;
 }
 
@@ -174,7 +196,7 @@ footer {
   height: 190px;
   background: rgba(0, 0, 0, 0.05);
   border: 4px solid rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
+  border-radius: 8px;
   margin: 20px 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -202,5 +224,94 @@ footer {
   margin-bottom: -2px;
   font-size: 12px;
   vertical-align: bottom;
+}
+
+.overlay {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.85);
+  overflow-x: hidden;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  background: #ebebeb;
+  border-radius: 8px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  width: 300px;
+  padding: 50px;
+  padding-bottom: 32px;
+}
+
+.message-icon {
+  margin-left: 10px;
+}
+
+.message {
+  height: 100%;
+  width: 100%;
+}
+
+.message-text-area {
+  margin-left: 16px;
+}
+
+.message-header {
+  font-family: Rubik, Arial, sans-serif;
+  font-size: 24px;
+  margin: 0;
+  padding-right: 48px;
+}
+
+.message-icon:before {
+  font-size: 20px;
+}
+
+.message-button {
+  background: gainsboro;
+  color: #383838;
+  border: none;
+  padding: 20px 32px;
+  font-size: 14px;
+  -webkit-transition: none;
+  transition: none;
+  font-family: Roboto, Arial, sans-serif;
+}
+
+.message-button:active {
+  background: #c2c2c2;
+  -webkit-transition: none;
+  transition: none;
+}
+
+.disabled {
+  color: #919191;
+}
+
+.password-field {
+  color: #383838;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 8px;
+  border: none;
+  background: gainsboro;
+  width: 200px;
+  margin: 6px 0;
+}
+
+.spacer {
+  height: 24px;
 }
 /*# sourceMappingURL=style.css.map */
