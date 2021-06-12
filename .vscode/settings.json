@@ -3,5 +3,7 @@
         "activityBar.background": "#1a1a1a",
         "titleBar.activeBackground": "#000000",
         "titleBar.activeForeground": "#F2FDF1"
-    }
+    },
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }
