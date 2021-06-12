@@ -166,6 +166,7 @@ button {
       -ms-flex-pack: justify;
           justify-content: space-between;
   margin: 0 6px;
+  padding-top: 10px;
 }
 
 footer {
