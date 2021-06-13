@@ -19,4 +19,4 @@ return folder
 
 #initialize gui
 eel.init("gui")
-eel.start('index.html', size=(500, 520))
+eel.start('index.html', size=(500, 500))
