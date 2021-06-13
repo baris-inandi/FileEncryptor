@@ -20,9 +20,9 @@
                     <div class="warn-area">No internet connection</div>
                 </div>
                 <div class="flex-row">
-                    <button onclick="py()" id="enc-btn" class="button-primary"><i
+                    <button onclick="enc()" id="enc-btn" class="button-primary"><i
                             class="fas fas-lock fa-lock"></i>Encrypt</button>
-                    <button id="dec-btn" class="button-secondary"><i class="fas fas-lock fa-unlock"></i>Decrypt</button>
+                    <button onclick="dec()" id="dec-btn" class="button-secondary"><i class="fas fas-lock fa-unlock"></i>Decrypt</button>
                 </div>
                 <div id="drop-area">
                     <i id="import-file-icon" class="fas fa-file-import"></i>
@@ -41,7 +41,7 @@
             </div>
         </footer>
     </div>
-    <div hidden="true" class="overlay">
+    <div hidden="true" id="overlay">
         <div class="flex-col align-center justify-center" id="dialog-content-wrapper">
 
                 <div hidden="true" class="popup" id="enc-failed">
@@ -117,15 +117,15 @@
                             </p>
                             <div class="spacer"></div>
                             <p class="no-margin">Enter Password: </p>
-                            <input class="password-field" type="password">
+                            <input id="enc-pass-input" class="password-field" type="password">
                             <p class="no-margin">Confirm Password: </p>
-                            <input class="password-field" type="password">
+                            <input id="enc-pass-input-confirmation" class="password-field" type="password">
                             <div class="spacer"></div>
                         </div>
                     </div>
                     <div class="flex-row align-center justify-center message-buttons">
-                        <button class="message-button">Cancel</button>
-                        <button disabled="true" class="disabled message-button">Encrypt</button>
+                        <button onclick='removePopups()' class="message-button">Cancel</button>
+                        <button id="enc-pass-btn" disabled="true" class="disabled message-button"></button>
                     </div>
                 </div>
 
@@ -143,7 +143,7 @@
                         </div>
                     </div>
                     <div class="flex-row align-center justify-center message-buttons">
-                        <button class="message-button">Cancel</button>
+                        <button onclick='removePopups()' class="message-button">Cancel</button>
                         <button class="message-button">Decrypt</button>
                     </div>
                 </div>
