@@ -1,15 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap')
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap')
 
-$accent-primary: #eb8921
-$accent-secondary: #02aba0
+$accent-primary: #5749d1
+$accent-secondary: #7992c7
+$accent-gradient: linear-gradient(150deg, saturate($accent-primary, 25%), $accent-secondary)
+$accent-box-shadow:  0 6px 24px 0 lighten($accent-primary, 20%)
 
-$background: #ebebeb
-$background-darker: darken($background, 6%)
-$background-secondary: rgba(0, 0, 0, .05)
-$background-footer: linear-gradient(180deg, #dbdbdd, darken(#dbdbdd, 12%))
+$background: #dfe0eb
+$background-contrast-1: darken($background, 5%)
+$background-contrast-2: lighten($background, 4%)
+$background-footer: $background-contrast-1
+$background-box-shadow: 0px 8px 22px -6px #c6cbd5
 
-$foreground: #383838
+$foreground: #606064
 $foreground-colorful: #fcfcfc
 $foreground-footer: #696972
 
@@ -22,9 +25,13 @@ $font-2: Roboto, Arial, sans-serif
 $radius: 8px
 $footer-height: 48px
 
+#app-window
+    height: 500px
+    width: 500px
+ 
 #app
     opacity: 0
-    transform: translateY(60px) scaleY(.9) scaleX(.8)
+    transform: translateY(-100px)
     transition: .5s ease
 
 footer
@@ -33,13 +40,14 @@ footer
 
 *
     transition: .25s ease
+    user-select: none
 
 body
     background: $background
     color: $foreground
     font-family: $font-2
     vertical-align: middle
-    overflow: hidden
+    margin: 0
 
 #app-container
   display: flex
@@ -48,6 +56,9 @@ body
   height: 100%
   flex-direction: column
 
+a
+    color: $accent-primary
+
 button
     padding: 40px 50px
     border-radius: $radius
@@ -55,6 +66,8 @@ button
     color: $foreground-colorful
     margin: 6px
     font-size: 22px
+    &:hover
+        transform: translateY(-6px)
 
 .error-color
     color: $error
@@ -65,32 +78,55 @@ button
 .success-color
     color: $success
 
-@function button($base)
-    @return linear-gradient(180deg, saturate(lighten($base, 2%), 6%), saturate(darken($base, 4%), 5%)), 4px solid darken($base, 4%), darken($base, 6%)
-    // background, border, :active
+#top-colored-area
+    background: $accent-gradient
+    width: 100vw
+    position: relative
+    margin: 0
+    margin-left: -50vw
+    height: 100px
+    left: 50%
+    padding: 40px 0
 
-.button-primary
-    $button-primary: button($accent-primary)
-    background: nth($button-primary, 1)
-    border: nth($button-primary, 2)
-    &:hover
-        box-shadow: 0 0 20px 0 lighten($accent-primary, 10%), 0 0 4px -1px black
+#top-color-info
+    background: $accent-gradient
+    width: 100%
+    border-radius: $radius $radius 0 0
+    padding: 20px 0
+
+.button-main
+    border-radius: 20px
+    background: $background-contrast-2
+    border: none
+    color: $foreground
+    height: 100%
+    margin: 12px
+    box-shadow: $background-box-shadow
     &:active
         transition: none !important
-        background: nth($button-primary, 3)
+        background: $background-contrast-1
 
-.button-secondary
-    $button-secondary: button($accent-secondary)
-    background: nth($button-secondary, 1)
-    border: nth($button-secondary, 2)
-    &:hover
-        box-shadow: 0 0 20px 0 lighten(desaturate($accent-secondary, 75%), 20%), 0 0 4px -1px black
-    &:active
-        transition: none !important
-        background: nth($button-secondary, 3)
+#button-main-wrapper
+    height: 180px
+    margin-top: 40px
+
+.hide-scrollbar
+    -ms-overflow-style: none
+    scrollbar-width: none  
+    &::-webkit-scrollbar
+        display: none
 
 .no-margin
-    margin: 0
+    margin: 0 !important
+
+.no-padding
+    padding: 0 !important
+
+.overflow
+    overflow-y: scroll !important
+
+.margin-auto
+    margin: auto
 
 .align-center
     align-items: center
@@ -110,27 +146,24 @@ button
     margin-right: 10px
     font-size: 16px
 
-#logo
+.logo
     font-size: 24px
     font-family: $font-1
-    color: $foreground
+    color: $foreground-colorful
     text-align: center
-    margin: 0 6px
-    padding-right: 10px
 
 .warn-area
-    background: $warning
-    padding: 16px 24px
-    margin: 20px 6px
-    border: nth(button($warning), 2)
+    margin-left: 40px;
     border-radius: $radius
     text-align: center
+    text-align: right
+    font-family: $font-1 
 
 #top-section
+    padding: 0
     align-items: center
     justify-content: space-between
-    margin: 0 6px
-    padding-top: 10px
+    max-width: 420px
 
 footer
     padding: 0 20px
@@ -148,11 +181,13 @@ footer
     padding-left: 10px
     font-size: 20px
 
+.pointer:hover
+    cursor: pointer
+
 #drop-area
     width: 100%
     height: 190px
-    background: $background-secondary
-    border: nth(button($background-secondary),2)
+    background: $background-contrast-1
     border-radius: $radius
     margin: 20px 0
     display: flex
@@ -188,7 +223,7 @@ footer
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: $background
+    background: $background-contrast-2
     border-radius: $radius
     height: fit-content
     width: 300px
@@ -215,19 +250,27 @@ footer
     font-size: 20px
 
 .message-button
-    background: $background-darker
+    background: $background
     color: $foreground
     border: none
-    padding: 20px 32px
-    font-size: 14px
-    transition: none
+    padding: 22px 28px
+    font-size: 16px
     font-family: $font-2
     &:active
-        background: darken($background-darker, 10%)
+        background: $background-contrast-1
         transition: none
 
 .disabled
-    color: lighten($foreground, 35%)
+    opacity: .33
+    &:hover
+        transform: unset
+
+.suggested-option
+    background: $accent-primary
+    color: $foreground-colorful
+    box-shadow: $accent-box-shadow
+    &:active
+        background: darken($accent-primary, 15%)
 
 .password-field
     color: $foreground
@@ -235,9 +278,33 @@ footer
     font-size: 20px
     border-radius: $radius
     border: none
-    background: $background-darker
+    background: $background
     width: 200px
     margin: 6px 0
 
 .spacer
     height: 24px
+
+.gh-alert-icon
+    font-size: 48px
+
+.gh-alert-title
+    font-size: 16px
+    margin: 0
+    font-family: $font-1
+
+.info-content
+    max-height: 100px
+    padding: 0 24px
+    padding-bottom: 60px
+
+.info-dismiss-wrapper
+    width: 100%
+    margin-bottom: -60px
+    transform: translateY(-80px)
+
+.info-fade-in
+    height: 60px
+    background: linear-gradient(0deg, $background-contrast-2 60%, transparent)
+    transform: translateY(-60px)
+    z-index: 999
