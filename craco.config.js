@@ -1,8 +1,1 @@
-module.exports = {
-    style: {
-      postcss: {
-        plugins: [
-        ],
-      },
-    },
-  }
+module.exports = {}

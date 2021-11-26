@@ -1,6 +1,8 @@
+import './Header.sass'
+
 const Header: React.FC = () => {
     return (
-        <h1>Hello there</h1>
+        <h1 className="uwu">Hello there</h1>
     )
 }
 
