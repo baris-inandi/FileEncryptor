@@ -9,7 +9,17 @@ module.exports = {
             fontFamily: {
                 'title': ['"Sora"', ...defaultTheme.fontFamily.sans],
             },
+            height: {
+                'fit-content': 'fit-content'
+              },
+            width: {
+                'fit-content': 'fit-content',
+            }
         },
+        maxWidth: {
+            '1/2': '50%',
+            '2/3': '67%'
+        }
     },
     variants: {
         extend: {},

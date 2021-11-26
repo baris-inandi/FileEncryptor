@@ -1,6 +1,8 @@
 const Header: React.FC = () => {
     return (
-        <h1 className="bg-red-500">Hello there</h1>
+        <header className="font-title text-sm font-bold w-full text-right p-4">
+            FileEncryptor
+        </header>
     )
 }
 

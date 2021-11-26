@@ -25,7 +25,7 @@
     "typescript": "^4.4.2"
   },
   "scripts": {
-    "dev": "craco start",
+    "dev": "cross-env TAILWIND_MODE=watch craco start",
     "react-build": "craco build",
     "react-test": "craco test",
     "react-eject": "react-scripts eject",
