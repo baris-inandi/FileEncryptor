@@ -1,5 +1,5 @@
-import Header from './components/Header/Header'
-import './global.sass'
+import Header from './components/Header'
+import './index.css'
 
 const FEXWrapper: React.FC = (props) => {
     return (

@@ -1,5 +1,5 @@
 import FEXWrapper from './FEXWrapper';
-import Home from './components/Home/Home';
+import Home from './components/Home';
 import './global.sass'
 
 function App() {
