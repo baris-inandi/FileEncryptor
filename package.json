@@ -12,7 +12,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.2.0",
-    "@types/node": "^12.20.24",
+    "@types/node": "^17.0.13",
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
     "cors": "^2.8.5",
